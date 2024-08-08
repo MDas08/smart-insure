@@ -11,9 +11,10 @@ function App() {
   return (
     <div className="App">
       <Navbar/>
-      {/* <Hero/> */}
+      <Hero/>
       {/* <ClaimInit/> */}
-      <ReportPage/>
+      <DocUpload/>
+      {/* <ReportPage/> */}
       <h2 className='mt-20 bg-color-blue'>Footer</h2>
     </div>
   );
