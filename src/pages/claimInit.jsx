@@ -144,7 +144,7 @@ const ClaimInit = () => {
             <input name="hospitalCode" type='number' onChange={handleParam}/>
           </div>
         </div>
-        <button type="submit" className='text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center'>Continue</button>
+        <button type="submit" className='bg-color-turq text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Continue</button>
 
       </div>
     </form>
