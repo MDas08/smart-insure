@@ -15,9 +15,10 @@ code {
 }
 
 input{
-  width: 95%;
+  height: 150%;
   border-radius: 8px;
   border: 2px solid #36C2CE;
+  padding: 1%;
 }
 
 textarea{
