@@ -1,7 +1,7 @@
 import axios from '../utils/axiosConf';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { redirect, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function FileItem({ name, index, totalIndex, maxUploads }) {
     if (totalIndex > maxUploads - 1) {

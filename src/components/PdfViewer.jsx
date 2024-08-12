@@ -1,5 +1,5 @@
 import React from 'react';
-import { Document, Page } from "react-pdf";
+// import { Document, Page } from "react-pdf";
 
 function PdfViewer({ url }) {
     return (
