@@ -11,7 +11,7 @@ const ClaimInit = () => {
 	const userState = useSelector(state => state.user)
 	const [loading, setLoading] = useState(false)
 	const [policy, setPolicy] = useState({
-		coverageStartDate: '-- ',
+		coverageStartDate: '--',
 		patientDob: '--',
 		patientName: '--',
 	})

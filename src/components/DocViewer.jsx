@@ -51,7 +51,7 @@ const DocViewer = ({ documents, editable, claimId }) => {
         )}
         <h1>List of all documents uploaded for the claim</h1>
         {docs.map(doc => (<>
-            <div className={`${loading && 'pointer-events-none'}`}>
+            <div className={`${loading && 'pointer-events-none'}`} key={doc.id}>
                 {editable && <button onClick={onDeleteAllDocsHandle}>Delete all documents</button>}
                 {mime.lookup(doc.name).startsWith('image') && <>
                     <div>
