@@ -1,44 +1,52 @@
-import React from 'react'
-import { useState } from 'react';
+/* eslint-disable react-hooks/rules-of-hooks */
+import axios from '../utils/axiosConf';
+import React, { useRef } from 'react'
+import { useDispatch } from 'react-redux';
+import { addUser } from '../store/userSlice';
+import jwt from 'jsonwebtoken';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const formRef = useRef()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-
-        //hash the password
-        
-        console.log('Email:', email);
-        console.log('Password:', password);
-
+        const formData = new FormData(formRef.current);
+        const data = Object.fromEntries(formData)
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/auth/login`, data)
+        if (res.data.err) {
+            alert(res.data.err)
+            return
+        }
+        const decodedJwt = jwt.decode(res.data.authToken)
+        localStorage.setItem('authToken', res.data.authToken)
+        console.log({ ...decodedJwt, authToken: res.data.authToken })
+        dispatch(addUser({ ...decodedJwt, authToken: res.data.authToken }))
+        return navigate('/')
     };
+
     return (
-        <div className='flex justify-center w-100'>
-            <form onSubmit={handleSubmit} className="bg-color-turq shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
+        <div className='flex justify-center w-100 mt-6'>
+            <form ref={formRef} onSubmit={handleSubmit} className="bg-color-turq shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
                 <p className='block text-white text-lg'>Please enter your email and password below</p>
                 <div className="my-4">
                     <label className="block text-white mb-2" htmlFor="email">Email</label>
                     <input
                         className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="email"
+                        name="email"
                         type="email"
-                        placeholder="abc@domain.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        defaultValue='email'
                     />
                 </div>
                 <div className="mb-6">
                     <label className="block text-white mb-2" htmlFor="password">Password</label>
                     <input
                         className="shadow  border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="password"
+                        name="password"
                         type="password"
-                        placeholder="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-
+                        defaultValue='password'
                     />
                 </div>
                 <div className="flex items-center justify-center">
@@ -54,4 +62,3 @@ function Login() {
 }
 
 export default Login
-
