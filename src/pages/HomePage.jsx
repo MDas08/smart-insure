@@ -70,10 +70,10 @@ function HomePage() {
         <p className='text-left text-xl italic'>{homePagePara2}</p>
       </div>
     </div>
-    <div className='flex justify-center items-center mt-20 mx-20 content-center border-4 border-color-dark  rounded-lg py-6'>
-      <div className='flex flex-col w-3/4'>
+    <div className='flex justify-center items-center mt-20 mx-10 md:mx-60 content-center border-2 border-color-blue  rounded-lg py-6 '>
+      <div className='flex flex-col w-10/12'>
       <h1 className='text-2xl font-semibold mb-6'>How to use Smart-Insure</h1>
-      <ol className='space-y-5'>
+      <ol className='space-y-5 text-pretty'>
         {howToUse.map((step) => (
           <li className='text-left text-lg font-light' key={step.key}>{step}</li>
         ))}
