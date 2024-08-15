@@ -55,9 +55,12 @@ const ViewUser = () => {
             <div>
                 <button className='bg-slate-600 p-2 m-2 text-white rounded-md' onClick={logout}>Logout</button>
                 <button className='bg-red-700 p-2 m-2 text-white rounded-md' onClick={deleteAccount}>Delete account</button>
-                {showPassInput && <div className='flex'>
-                    <input type="text" ref={passwdRef} defaultValue='' />
-                    <button onClick={() => setShowPassInput(false)}>Cancel</button>
+                {showPassInput && <div className='flex gap-1'>
+                    <div>
+                        <label htmlFor="password">Enter password</label>
+                        <input className='h-10 w-full' name='password' id='password' type="password" ref={passwdRef} />
+                    </div>
+                    <button className='border-4 border-slate-400 m-2 p-2 rounded-md' onClick={() => setShowPassInput(false)}>Cancel</button>
                 </div>}
                 <p>Name</p>
                 <p>{user.firstName} {user.lastName}</p>
