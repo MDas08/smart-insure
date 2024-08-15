@@ -60,10 +60,17 @@ const Dashboard = () => {
                 </div>
             </form>
 
-            <div>
-                {claims.map(claim => <div key={claim.id}>
-                    <ClaimTile {...claim} />
-                </div>)}
+            <div className='flex flex-col gap-y-5 m-3 p-3'>
+                {claims.length === 0 ?
+                    <div>{
+                        userState.role === "CLAIM_ASSESSOR" ? <p>No cliams pending yet</p> : <p>No cliams filed yet</p>
+                    }</div>
+                    : <div>
+                        {claims.map(claim => <div key={claim.id}>
+                            <ClaimTile {...claim} />
+                        </div>)}
+                    </div>
+                }
             </div>
         </div>
     </>)
