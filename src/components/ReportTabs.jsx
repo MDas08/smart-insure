@@ -4,7 +4,6 @@ import React from 'react'
 function ReportTabs(buttonNames) {
     if (!Array.isArray(buttonNames)) {
         console.error("buttonNames is not an array:", buttonNames);
-        console.log(typeof(buttonNames))
         return <div>Error: buttonNames is not an array</div>;
       }
   return (

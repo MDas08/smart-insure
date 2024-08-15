@@ -78,7 +78,7 @@ function DocUpload() {
                     </div>
                 </div>
             )}
-            <div className={`p-8 ${loading ? 'blur-sm pointer-events-none' : ''} flex flex-col items-center`}>
+            <div className={`p-8 ${loading && 'blur-sm pointer-events-none'} flex flex-col items-center`}>
                 {!isSubmitted &&
                     (
                         <h1 className='mt-10 text-lg'>Upload your documents below</h1>

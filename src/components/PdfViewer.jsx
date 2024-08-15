@@ -1,14 +1,18 @@
 import React from 'react';
-// import { Document, Page } from "react-pdf";
+import { Document, Page } from "react-pdf";
 
 function PdfViewer({ url }) {
+    // url = 'https://pdfobject.com/pdf/sample.pdf'
+
     return (
-        <div>
-            {/* <Document file={url}>
-                <Page pageNumber={1} />
-            </Document> */}
-            <p>pdf viewer</p>
-        </div>
+        <a href={url} target='_blank' rel="noreferrer noopener">
+            <div className='p-6 bg-slate-400 inline-block'>
+                <Document file={url} >
+                    <Page pageNumber={1} renderTextLayer={false} renderAnnotationLayer={false} />
+                </Document>
+                <p>Click to view</p>
+            </div>
+        </a>
     );
 }
 

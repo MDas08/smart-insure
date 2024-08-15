@@ -9,24 +9,127 @@ import axios from "./utils/axiosConf";
 import Dashboard from "./pages/Dashboard";
 import store from './store/storeConf';
 import ViewClaim from "./pages/ViewClaim";
+import UpdateReport from "./pages/UpdateReport";
+import ViewUser from "./pages/ViewUser";
+import MyProfile from "./pages/MyProfile";
+import EditClaim from "./pages/EditClaim";
+import Signup from "./pages/Signup";
 
 export const router = createBrowserRouter([
     {
         path: '/', element: <NavLayout />, children: [
             { path: "", element: <Dashboard />, loader: dashboardLoader },
-            { path: "new-claim", element: <ClaimInit /> },
+            { path: "new-claim", element: <ClaimInit />, loader: claimInitLoader },
             { path: "upload-docs/:claimId", element: <DocUpload />, loader: docUploadLoader },
             { path: "login", element: <Login /> },
             { path: "view-report/:reportId", element: <ReportPage />, loader: viewReportLoader },
             { path: "view-claim/:claimId", element: <ViewClaim />, loader: viewClaimLoader },
+            { path: "update-report/:reportId", element: <UpdateReport />, loader: updateReportLoader },
+            { path: "view-user/:userId", element: <ViewUser />, loader: viewUserLoader },
+            { path: "my-profile", element: <MyProfile />, loader: myProfileLoader },
+            { path: "edit-claim/:claimId", element: <EditClaim />, loader: editClaimLoader },
+            { path: "signup", element: <Signup /> },
         ]
     }
 ])
 
+async function viewUserLoader(req) {
+    const userState = store.getState().user
+    if (!userState.authToken) return redirect('/login')
+    if (userState.role === "POLICY_HOLDER") {
+        alert('Insufficient permission to view user')
+        return redirect('/')
+    }
+    const header = {
+        headers: {
+            Authorization: `Bearer ${userState.authToken}`
+        }
+    }
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/user/details/${req.params.userId}`, header)
+    if (res.data.err) {
+        alert(res.data.err)
+        return redirect('/')
+    }
+    return res.data.msg
+}
+
+async function editClaimLoader(req) {
+    const userState = store.getState().user
+    if (!userState.authToken) return redirect('/login')
+    if (userState.role === "CLAIM_ASSESSOR") {
+        alert('Only policy holders can edit thier claims')
+        return redirect('/')
+    }
+
+    const header = {
+        headers: {
+            Authorization: `Bearer ${userState.authToken}`
+        }
+    }
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/${req.params.claimId}`, header)
+    if (res.data.err) {
+        alert(res.data.err)
+        return redirect('/')
+    }
+    return res.data.msg
+}
+
+async function myProfileLoader() {
+    const userState = store.getState().user
+    if (!userState.authToken) return redirect('/login')
+
+    const header = {
+        headers: {
+            Authorization: `Bearer ${userState.authToken}`
+        }
+    }
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/user/my-details`, header)
+    if (res.data.err) {
+        alert(res.data.err)
+        return redirect('/')
+    }
+    return res.data.msg
+}
+
 function docUploadLoader() {
     const userState = store.getState().user
     if (!userState.authToken) return redirect('/login')
+    if (userState.role === "CLAIM_ASSESSOR") {
+        alert('Only policy holders can upload document on their claims')
+        return redirect('/')
+    }
     return null
+}
+
+function claimInitLoader() {
+    const userState = store.getState().user
+    if (!userState.authToken) return redirect('/login')
+    if (userState.role === "CLAIM_ASSESSOR") {
+        alert('Only policy holders can initialize claims')
+        return redirect('/')
+    }
+    return null
+}
+
+async function updateReportLoader(req) {
+    const userState = store.getState().user
+    if (!userState.authToken) return redirect('/login')
+    if (userState.role === "POLICY_HOLDER") {
+        alert('Insufficient permission to update claim')
+        return redirect('/')
+    }
+
+    const header = {
+        headers: {
+            Authorization: `Bearer ${userState.authToken}`
+        }
+    }
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/report/${req.params.reportId}`, header)
+    if (res.data.err) {
+        alert(res.data.err)
+        return redirect('/')
+    }
+    return res.data.msg
 }
 
 async function dashboardLoader() {
