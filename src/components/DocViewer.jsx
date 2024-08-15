@@ -4,12 +4,12 @@ import axios from '../utils/axiosConf'
 import { useSelector } from 'react-redux'
 import PdfViewer from './PdfViewer'
 
-const DocViewer = ({ documents, editable, claimId }) => {
+const DocViewer = ({ documents, editable, claimId, setClaim = () => {} }) => {
     const [loading, setLoading] = useState(false)
     const [docs, setDocs] = useState(documents)
     const userState = useSelector(state => state.user)
 
-    if(documents === '' || documents.length === 0) {
+    if (documents === '' || documents.length === 0) {
         return <h1>No documents uploaded for the claim yet</h1>
     }
 
@@ -27,6 +27,7 @@ const DocViewer = ({ documents, editable, claimId }) => {
             alert(res.data.err)
             return
         }
+        setClaim(claim => ({ ...claim, documents: docs.filter(doc => doc.id !== docId) }))
         setDocs(docs => docs.filter(doc => doc.id !== docId))
     }
 
@@ -38,6 +39,7 @@ const DocViewer = ({ documents, editable, claimId }) => {
             alert(res.data.err)
             return
         }
+        setClaim(claim => ({ ...claim, documents: [] }))
         setDocs([])
     }
 
@@ -50,22 +52,22 @@ const DocViewer = ({ documents, editable, claimId }) => {
             </div>
         )}
         <h1>List of all documents uploaded for the claim</h1>
+        {editable && <button className='bg-red-500 m-2 p-2 text-white' onClick={onDeleteAllDocsHandle}>Delete all documents</button>}
         {docs.map(doc => (<>
             <div className={`${loading && 'pointer-events-none'}`} key={doc.id}>
-                {editable && <button onClick={onDeleteAllDocsHandle}>Delete all documents</button>}
                 {mime.lookup(doc.name).startsWith('image') && <>
                     <div>
-                        {editable && <button onClick={() => onDeleteDocHandle(doc.id)}>Delete</button>}
                         <h2>{doc.originalName}</h2>
                         <img className='h-64' src={doc.url} alt={doc.originalName} />
+                        {editable && <button className='bg-red-500 m-2 p-2 text-white' onClick={() => onDeleteDocHandle(doc.id)}>Delete</button>}
                     </div>
                 </>}
 
                 {mime.lookup(doc.name) === ('application/pdf') && <>
                     <div>
-                        {editable && <button onClick={() => onDeleteDocHandle(doc.id)}>Delete</button>}
                         <h2>{doc.originalName}</h2>
                         <PdfViewer url={doc.url} />
+                        {editable && <button className='bg-red-500 m-2 p-2 text-white' onClick={() => onDeleteDocHandle(doc.id)}>Delete</button>}
                     </div>
                 </>}
             </div>

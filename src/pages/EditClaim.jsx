@@ -1,24 +1,17 @@
 import axios from '../utils/axiosConf';
 import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import DocViewer from '../components/DocViewer';
 
-const ClaimInit = () => {
+const EditClaim = () => {
 	const formRef = useRef()
-	const policyNumRef = useRef()
+	const { claimId } = useParams()
+	const [claim, setClaim] = useState(useLoaderData())
 	const navigate = useNavigate()
 	const userState = useSelector(state => state.user)
 	const [loading, setLoading] = useState(false)
-	const [policy, setPolicy] = useState({
-		coverageStartDate: '--',
-		patientDob: '--',
-		patientName: '--',
-	})
-
-	if (!userState.authToken) {
-		return <Navigate to='/login' />
-	}
 
 	const headers = {
 		headers: {
@@ -29,32 +22,30 @@ const ClaimInit = () => {
 	async function submit(event) {
 		event.preventDefault();
 		const formData = new FormData(formRef.current);
-		formData.append('policyId', policy.id)
 		const data = Object.fromEntries(formData)
 		data.claimAmount = +data.claimAmount
 		data.dateOfAdmission = dayjs(data.dateOfAdmission).format('YYYY-MM-DD')
 		data.dateOfIntimation = dayjs(data.dateOfIntimation).format('YYYY-MM-DD')
-		console.log(data)
+		data.documents = claim.documents
+		setClaim(data)
 		setLoading(true)
-		const res = await axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/new`, data, headers)
+		const res = await axios.put(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/update/${claimId}`, data, headers)
 		setLoading(false)
 		if (res.data.err) {
 			alert(res.data.err)
 			return
 		}
+		alert(res.data.msg)
 		return navigate('/')
 	};
 
-	async function getPolicy() {
-		const enteredPolicyNumber = policyNumRef.current.value
+	async function handleDeleteClaim() {
 		setLoading(true)
-		const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/policy/${enteredPolicyNumber}`, headers)
+		const res = await axios.delete(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/delete/${claimId}`, headers)
 		setLoading(false)
-		if (res.data.err) {
-			alert(res.data.err)
-			return
-		}
-		setPolicy({ ...res.data.msg })
+		if (res.data.err) return alert(res.data.err)
+		alert(res.data.msg)
+		return navigate('/')
 	}
 
 	return (<>
@@ -74,17 +65,17 @@ const ClaimInit = () => {
 					<div className='flex md:flex-row flex-col w-4/5 justify-center items-center md:items-start space-y-4 md:space-y-0'>
 						<div className="flex flex-col w-11/12 space-y-4 md:mr-2">
 							<label className='mr-auto'>Date of Admission</label>
-							<input name="dateOfAdmission" type='date' />
+							<input name="dateOfAdmission" type='date' defaultValue={dayjs(claim.dateOfAdmission).format('YYYY-MM-DD')} />
 							<label className='mr-auto'>Claim title</label>
-							<input name="title" type='text' />
+							<input name="title" type='text' defaultValue={claim.title} />
 							<label className='mr-auto'>Claim Description</label>
-							<textarea name="desc" />
+							<textarea name="desc" defaultValue={claim.desc} />
 						</div>
 						<div className="flex flex-col w-11/12 space-y-4 md:mr-2">
 							<label className='mr-auto'>Claim Amount</label>
-							<input name="claimAmount" type='number' />
+							<input name="claimAmount" type='number' defaultValue={claim.claimAmount} />
 							<label className='mr-auto'>Claim Category Type</label>
-							<select name='claimType' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-11/12 rounded-lg border-2 border-color-turq">
+							<select defaultValue={claim.claimType} name='claimType' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-11/12 rounded-lg border-2 border-color-turq">
 								<option value="Cashless">Cashless</option>
 								<option value="Reimbursement">Reimbursement</option>
 							</select>
@@ -96,22 +87,8 @@ const ClaimInit = () => {
 					</div>
 					<div className='flex md:flex-row flex-col w-4/5 justify-center items-center md:items-start space-y-4 md:space-y-0'>
 						<div className="flex flex-col w-11/12 space-y-4 md:mr-2">
-							<label className='mr-auto'>Policy Number</label>
-							<div className='flex items-center'>
-								<input name="policyNumber" className='h-8' type='number' ref={policyNumRef} />
-								<div onClick={getPolicy} className='cursor-pointer m-2 p-2 bg-blue-500 text-white inline-block rounded-md'>Set</div>
-							</div>
-							<label className='mr-auto'>Date of Birth</label>
-							<p className='rounded-2xl border-2 border-color-turq'>{policy.patientDob}</p>
 							<label className='mr-auto'>Date of Intimation</label>
-							<input name="dateOfIntimation" type='date' />
-						</div>
-						<div className="flex flex-col w-11/12 space-y-4 md:mr-2">
-							<label className='mr-auto'>Patient Name</label>
-							<p className='rounded-2xl border-2 border-color-turq'>{policy.patientName}</p>
-							<label className='mr-auto'>Coverage Start Date</label>
-							<p className='rounded-2xl border-2 border-color-turq'>{policy.coverageStartDate}</p>
-
+							<input defaultValue={dayjs(claim.dateOfIntimation).format('YYYY-MM-DD')} name="dateOfIntimation" type='date' />
 						</div>
 					</div>
 
@@ -121,20 +98,24 @@ const ClaimInit = () => {
 					<div className='flex md:flex-row flex-col w-4/5 justify-center items-center md:items-start space-y-4 md:space-y-0'>
 						<div className="flex flex-col w-11/12 space-y-4 md:mr-2">
 							<label className='mr-auto'>Hospital Name</label>
-							<input name="hospName" type='text' />
+							<input defaultValue={claim.hospName} name="hospName" type='text' />
 							<label className='mr-auto'>Hospital City</label>
-							<input name="hospCity" type='text' />
+							<input defaultValue={claim.hospCity} name="hospCity" type='text' />
 						</div>
 						<div className="flex flex-col w-11/12 space-y-4 md:mr-2">
 							<label className='mr-auto'>Hospital Code</label>
-							<input name="hospCode" type='text' />
+							<input defaultValue={claim.hospCode} name="hospCode" type='text' />
 						</div>
 					</div>
-					<div onClick={submit} className='bg-color-turq cursor-pointer inline-block text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Continue</div>
+					<div className='flex gap-x-5'>
+						<div onClick={submit} className='bg-color-turq cursor-pointer inline-block text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Continue</div>
+						<div className='h-10 inline-block cursor-pointer rounded-md p-2 m-2 bg-red-500 text-white' onClick={handleDeleteClaim}>Delete claim</div>
+					</div>
 				</div>
 			</form>
+			<DocViewer setClaim={setClaim} editable={true} documents={Array.from(claim.documents ?? [])} claimId={claimId} />
 		</div>
 	</>);
 };
 
-export default ClaimInit;
+export default EditClaim;

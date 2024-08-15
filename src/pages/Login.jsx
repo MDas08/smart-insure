@@ -20,10 +20,10 @@ function Login() {
             alert(res.data.err)
             return
         }
-        const decodedJwt = jwt.decode(res.data.authToken)
-        localStorage.setItem('authToken', res.data.authToken)
-        console.log({ ...decodedJwt, authToken: res.data.authToken })
-        dispatch(addUser({ ...decodedJwt, authToken: res.data.authToken }))
+        const authToken = res.data.authToken
+        const decodedJwt = jwt.decode(authToken)
+        localStorage.setItem('authToken', authToken)
+        dispatch(addUser({ ...decodedJwt, authToken }))
         return navigate('/')
     };
 
