@@ -40,11 +40,11 @@ const Dashboard = () => {
     return (<>
         <div>
             {userState.role === "CLAIM_ASSESSOR" && <>
-                <h1>List of pending claims</h1>
+                <h1 className='font-medium text-xl'>Pending Claims</h1>
             </>}
 
             {userState.role === "POLICY_HOLDER" && <>
-                <h1>List of claims filed</h1>
+                <h1 className='font-medium text-xl'>Claims Filed</h1>
             </>}
 
             <form ref={formRef} onSubmit={handleFormSubmit}>
