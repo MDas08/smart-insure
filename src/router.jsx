@@ -50,7 +50,6 @@ async function viewUserLoader(req) {
         alert(res.data.err)
         return redirect('/')
     }
-    console.log(res.data.msg)
     return res.data.msg
 }
 
@@ -157,7 +156,6 @@ async function dashboardLoader() {
         alert(res.data.err)
         return { err: res.data.err }
     }
-    console.log(res.data.msg)
     return res.data.msg
 }
 

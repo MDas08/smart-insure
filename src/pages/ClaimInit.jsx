@@ -34,7 +34,6 @@ const ClaimInit = () => {
 		data.claimAmount = +data.claimAmount
 		data.dateOfAdmission = dayjs(data.dateOfAdmission).format('YYYY-MM-DD')
 		data.dateOfIntimation = dayjs(data.dateOfIntimation).format('YYYY-MM-DD')
-		console.log(data)
 		setLoading(true)
 		const res = await axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/new`, data, headers)
 		setLoading(false)

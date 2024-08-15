@@ -37,7 +37,6 @@ const UpdateSummary = ({ report, headers, reportId }) => {
         const newSummary = JSON.parse(res.data.msg).Summary
         summaryRef.current.summary.value = newSummary
         setSummary(newSummary)
-        console.log(newSummary)
         return
     }
 

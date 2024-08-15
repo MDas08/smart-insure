@@ -59,7 +59,6 @@ const UpdateDocwise = ({ report, headers, reportId }) => {
         if (res.data.err) {
             alert(res.data.err)
         }
-        console.log('+++++++++++++++++++++++', JSON.parse(res.data.msg))
         setDocWise(JSON.parse(res.data.msg))
     }
 

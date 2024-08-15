@@ -45,7 +45,6 @@ const UpdateTreatments = ({ report, headers, reportId }) => {
         if (res.data.err) {
             alert(res.data.err)
         }
-        console.log(JSON.parse(res.data.msg).TreatmentDetails)
         setAltTreatements(JSON.parse(res.data.msg).TreatmentDetails)
     }
 
