@@ -38,35 +38,32 @@ const Dashboard = () => {
     }
 
     return (<>
-        <div>
+        <div className='w-full'>
             {userState.role === "CLAIM_ASSESSOR" && <>
-                <h1 className='font-medium text-xl'>Pending Claims</h1>
+                <h1 className='font-medium text-3xl text-center m-10'>Pending Claims</h1>
             </>}
 
             {userState.role === "POLICY_HOLDER" && <>
-                <h1 className='font-medium text-xl'>Claims Filed</h1>
+                <h1 className='font-medium text-3xl text-center m-10'>Claims Filed</h1>
             </>}
 
             <form ref={formRef} onSubmit={handleFormSubmit}>
-                <div>
-                    <div className='flex'>
+                <div className='flex justify-center items-center space-x-5'>
                         <label htmlFor="claimsPerPage">Claims per page: </label>
-                        <input type="number" name='claimsPerPage' />
-                    </div>
-                    <div className='flex'>
+                        <input type="number" name='claimsPerPage'/>
                         <label htmlFor="pageNumber">Page number: </label>
                         <input type="number" name='pageNumber' />
-                    </div>
+                    
                 </div>
             </form>
 
-            <div className='flex flex-col gap-y-5 m-3 p-3'>
+            <div>
                 {claims.length === 0 ?
-                    <div>{
+                    <div >{
                         userState.role === "CLAIM_ASSESSOR" ? <p>No cliams pending yet</p> : <p>No cliams filed yet</p>
                     }</div>
-                    : <div>
-                        {claims.map(claim => <div key={claim.id}>
+                    : <div className='flex flex-row flex-wrap justify-center lg:justify-around'>
+                        {claims.map(claim => <div key={claim.id} className='md:w-2/3 lg:w-1/4'>
                             <ClaimTile {...claim} />
                         </div>)}
                     </div>

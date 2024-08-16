@@ -53,8 +53,11 @@ const ViewUser = () => {
         )}
         <div className={`flex justify-center items-center flex-col ${loading && 'blur-sm pointer-events-none'}`}>
             <div>
-                <button className='bg-slate-600 p-2 m-2 text-white rounded-md' onClick={logout}>Logout</button>
-                <button className='bg-red-700 p-2 m-2 text-white rounded-md' onClick={deleteAccount}>Delete account</button>
+                <div className='flex justify-center'>
+                <button className='bg-color-turq px-4 py-2 m-4 text-white rounded-lg' onClick={logout}>Logout</button>
+                <button className='bg-color-dark px-4 py-2 m-4 text-white rounded-lg' onClick={deleteAccount}>Delete account</button>
+                </div>
+                
                 {showPassInput && <div className='flex gap-1'>
                     <div>
                         <label htmlFor="password">Enter password</label>
@@ -62,21 +65,36 @@ const ViewUser = () => {
                     </div>
                     <button className='border-4 border-slate-400 m-2 p-2 rounded-md' onClick={() => setShowPassInput(false)}>Cancel</button>
                 </div>}
-                <p>Name</p>
-                <p>{user.firstName} {user.lastName}</p>
-                <p>Age</p>
-                <p>{dayjs().diff(user.dob, 'year')} Years</p>
-                <p>Role</p>
-                <p>{user.role}</p>
-                <p>Adress</p>
-                <p>{user.address}</p>
-                <p>Phone</p>
-                <p>{user.phone}</p>
+                <table className='flex flex-col border-2 border-color-turq rounded-lg w-auto px-10 py-8 m-5'>
+                        <tbody className='border-spacing-2'>
+                            <tr>
+                                <th className='text-left'>Name</th>
+                                <td>{user.firstName} {user.lastName}</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Age</th>
+                                <td>{dayjs().diff(user.dob, 'year')} Years</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Role</th>
+                                <td>{user.role}</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Address</th>
+                                <td>{user.address}</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Phone</th>
+                                <td>{user.phone}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                
                 {userState.role === "POLICY_HOLDER" && <div>
-                    <p>List of all claims I have filed</p>
+                    <p className='text-xl m-5 font-medium'>List of all claims filed:</p>
                     {user.claims.length === 0 ?
                         <p>No claims filed yet</p> :
-                        <div>
+                        <div className='flex flex-row flex-wrap justify-center lg:justify-around'>
                             {user.claims.map(claim => <div key={claim.id}>
                                 <ClaimTile key={uuid()} {...claim} />
                             </div>)}

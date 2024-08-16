@@ -14,6 +14,7 @@ import ViewUser from "./pages/ViewUser";
 import MyProfile from "./pages/MyProfile";
 import EditClaim from "./pages/EditClaim";
 import Signup from "./pages/Signup";
+import HomePage from "./pages/HomePage";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
             { path: "my-profile", element: <MyProfile />, loader: myProfileLoader },
             { path: "edit-claim/:claimId", element: <EditClaim />, loader: editClaimLoader },
             { path: "signup", element: <Signup /> },
+            { path: "home", element: <HomePage/> },
         ]
     }
 ])
@@ -198,9 +200,9 @@ async function viewClaimLoader(req) {
 }
 
 function NavLayout() {
-    return (<>
+    return (<div className="flex flex-col min-h-screen">
         <Navbar />
         <Outlet />
         <Footer />
-    </>)
+    </div>)
 }

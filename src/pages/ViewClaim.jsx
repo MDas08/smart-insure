@@ -42,39 +42,57 @@ const ViewClaim = () => {
         <div className={`w-full ${loading && 'blur-sm pointer-events-none'}`}>
             <form ref={formRef}>
                 <div className={`flex w-full items-center flex-col`}>
+
                     <div>
-                        <div>
-                            <h1>{claim.title}</h1>
-                            <h3>{claim.desc}</h3>
-                            {userState.role === "POLICY_HOLDER" && <div className='bg-slate-500 text-white m-2 p-2 rounded-md inline-block cursor-pointer' onClick={() => navigate(`/edit-claim/${claimId}`, { claim })}>Edit</div>}
+                        <h1 className='font-medium text-3xl text-center m-10'>Claim Title: {claim.title}</h1>
+                        <h3 className='font-medium text-xl text-center mb-10'>Description: {claim.desc}</h3>
+                        <div className='flex justify-center'>
+                            {userState.role === "POLICY_HOLDER" && <div className='bg-color-turq text-white m-2 px-4 py-2 font-medium rounded-lg inline-block cursor-pointer' onClick={() => navigate(`/edit-claim/${claimId}`, { claim })}>Edit</div>}
                             {userState.role === "CLAIM_ASSESSOR" && <>
                                 {claim.report === null ?
                                     <>
-                                        <div className='bg-slate-500 text-white m-2 p-2 rounded-md inline-block cursor-pointer' onClick={handleGenReport}>Generate report </div>
+                                        <div className='bg-color-turq text-white m-2 px-4 py-2 font-medium rounded-lg inline-block cursor-pointer' onClick={handleGenReport}>Generate report </div>
                                     </> :
                                     <>
-                                        <div className='bg-slate-500 text-white m-2 p-2 rounded-md inline-block cursor-pointer' onClick={() => navigate(`/view-report/${claim.report.id}`)}>Go to report</div>
+                                        <div className='bg-color-turq text-white m-2 px-4 py-2 font-medium rounded-lg inline-block cursor-pointer' onClick={() => navigate(`/view-report/${claim.report.id}`)}>Go to report</div>
                                     </>
                                 }
                             </>}
                         </div>
-                        <div>
-                            <h2>Type of claim</h2>
-                            <p>{claim.claimType}</p>
-                            <h2>Hospital name</h2>
-                            <p>{claim.hospName}</p>
-                            <h2>Hospital city</h2>
-                            <p>{claim.hospCity}</p>
-                            <h2>Hospital code</h2>
-                            <p>{claim.hospCode}</p>
-                            <h2>Date of Admission</h2>
-                            <p>{claim.dateOfAdmission}</p>
-                            <h2>Date of Intimation</h2>
-                            <p>{claim.dateOfIntimation}</p>
-                            <h2>Claim Amount</h2>
-                            <p>{claim.claimAmount}</p>
-                        </div>
                     </div>
+                    
+                    <table className='flex flex-col border-2 border-color-turq rounded-lg w-auto px-10 py-8 '>
+                        <tbody className='border-spacing-2'>
+                            <tr>
+                                <th className='text-left'>Type of claim</th>
+                                <td>{claim.claimType}</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Hospital name</th>
+                                <td>{claim.hospName}</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Hospital city</th>
+                                <td>{claim.hospCity}</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Hospital code</th>
+                                <td>{claim.hospCode}</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Date of Admission  </th>
+                                <td>{claim.dateOfAdmission}</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Date of Intimation</th>
+                                <td>{claim.dateOfIntimation}</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Claim Amount</th>
+                                <td>{claim.claimAmount}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </form>
             <DocViewer editable={false} documents={Array.from(claim.documents)} claimId={claim.id} />

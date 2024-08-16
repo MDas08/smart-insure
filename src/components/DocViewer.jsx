@@ -10,7 +10,7 @@ const DocViewer = ({ documents, editable, claimId, setClaim = () => {} }) => {
     const userState = useSelector(state => state.user)
 
     if (documents === '' || documents.length === 0) {
-        return <h1>No documents uploaded for the claim yet</h1>
+        return <h1 className='text-center font text-xl mt-5'>No documents uploaded for the claim yet</h1>
     }
 
     const headers = {

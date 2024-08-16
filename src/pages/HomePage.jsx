@@ -2,8 +2,11 @@ import React from 'react';
 import { useState } from 'react';
 import Lottie from 'react-lottie';
 import animationData from '../lottie/homePageAnimation.json';
+import Hero from "../components/Hero"
+import { useNavigate } from 'react-router-dom'
 
 function HomePage() {
+  const navigate = useNavigate()
   const homePagePara1 = "Tired of claim headaches? Smart-Insure uses advanced AI to quickly assess your medical claims. Our intelligent system speeds up the process, giving you peace of mind. Let us handle the paperwork while you focus on recovery. "
   const homePagePara2 = "Experience the future of claims – accurate, efficient, and hassle-free. Smart-Insure: Your partner in healthcare."
   const faqs = [
@@ -37,7 +40,7 @@ function HomePage() {
     "5. Await Notification: You will be contacted by your insurance provider regarding the claim status.",
     "6. Check Claim Status: For updates, you can log in to your Smart-Insure account to check the status of your claim."
   ];
-  
+
 
   const defaultOptions = {
     loop: true,
@@ -56,33 +59,39 @@ function HomePage() {
 
   return (
     <div className='content-center'>
-    <div className='flex justify-center items-center md:flex-row mx-10'>
-      <div className=''>
-        <Lottie
-          options={defaultOptions}
-          height={400}
-          width={400}
-        />
+      <Hero />
+      <div className='flex justify-center items-center md:flex-row mx-10'>
+        <div className='hidden md:block'>
+          <Lottie
+            options={defaultOptions}
+            height={400}
+            width={400}
+          />
+        </div>
+        <div className='flex flex-col mx-3 md:mx-10 space-y-5 mt-20 md:w-1/2 justify-center'>
+          <h1 className='text-left text-2xl font-semibold '>Smart-Insure: Faster, Smarter Claim Processing</h1>
+          <p className='text-left text-xl'>{homePagePara1}</p>
+          <p className='text-left text-xl italic'>{homePagePara2}</p>
+        </div>
       </div>
-      <div className='flex flex-col mx-10 space-y-5 mt-20 w-1/2 justify-center'>
-        <h1 className='text-left text-2xl font-semibold '>Smart-Insure: Faster, Smarter Claim Processing</h1>
-        <p className='text-left text-xl'>{homePagePara1}</p>
-        <p className='text-left text-xl italic'>{homePagePara2}</p>
+      <div className='flex justify-center items-center mt-20 mx-10 md:mx-60 content-center border-2 border-color-blue  rounded-lg py-6 '>
+        <div className='flex flex-col w-10/12'>
+          <h1 className='text-2xl font-semibold mb-6'>How to use Smart-Insure</h1>
+          <ol className='space-y-5 text-pretty'>
+            {howToUse.map((step) => (
+              <li className='text-left text-lg font-light' key={step.key}>{step}</li>
+            ))}
+          </ol>
+
+        </div>
+
       </div>
-    </div>
-    <div className='flex justify-center items-center mt-20 mx-10 md:mx-60 content-center border-2 border-color-blue  rounded-lg py-6 '>
-      <div className='flex flex-col w-10/12'>
-      <h1 className='text-2xl font-semibold mb-6'>How to use Smart-Insure</h1>
-      <ol className='space-y-5 text-pretty'>
-        {howToUse.map((step) => (
-          <li className='text-left text-lg font-light' key={step.key}>{step}</li>
-        ))}
-      </ol>
-      
-    </div>
-    </div>
-    <button className='bg-color-dark text-white py-4 px-10 rounded-full hover:bg-color-blue mt-10'>Start your Claim</button>
-    <div className="w-3/4 mx-auto px-4 py-8 mt-10">
+      <div className='flex justify-center'>
+        <button className='bg-color-dark text-white py-4 px-10 rounded-full hover:bg-color-blue mt-10'
+          onClick={() => navigate(`/new-claim`)}>Start your Claim</button>
+      </div>
+
+      <div className="w-3/4 mx-auto px-4 py-8 mt-10">
         <h2 className="text-2xl font-semibold text-center mb-8 mt-10">Frequently Asked Questions</h2>
         <div className="space-y-4">
           {faqs.map((faq, index) => (

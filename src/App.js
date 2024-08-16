@@ -20,7 +20,7 @@ function App() {
       {/* <ClaimInit/> */}
       {/* <DocUpload/> */}
       {/* <ReportPage/> */}
-      <h2 className='mt-20 bg-color-blue'>Footer</h2>
+      
     </div>
   );
 }

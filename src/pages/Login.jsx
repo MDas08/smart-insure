@@ -37,7 +37,7 @@ function Login() {
                         className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         name="email"
                         type="email"
-                        defaultValue='email'
+                        placeholder='email'
                     />
                 </div>
                 <div className="mb-6">
@@ -46,7 +46,7 @@ function Login() {
                         className="shadow  border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         name="password"
                         type="password"
-                        defaultValue='password'
+                        placeholder='password'
                     />
                 </div>
                 <div className="flex items-center justify-center">
