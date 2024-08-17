@@ -58,18 +58,18 @@ function ReportPage() {
         <div className={`p-2 ${loading && 'blur-sm pointer-events-none'}`}>
             <div>
                 {report.approved !== null && <div>
-                    <h1 className='text-lg'>Approved: {report.approved}</h1>
+                    <h1 className='m-8 px-2 py-1 text-lg rounded-lg text-white bg-color-turq w-fit'>Approved: {report.approved}</h1>
                 </div>}
                 <hr />
 
-                <div className='m-8'>
+                <div className='m-8 rounded-lg p-10 border-2 border-color-turq'>
                     <div className='flex justify-between'>
                         <h1 className='text-lg font-bold'>Report Wise Summary</h1>
                         {userState.role === "CLAIM_ASSESSOR" && <button className='p-2 rounded-md bg-color-turq text-white' onClick={handleUpdateReport}>Edit Report</button>}
                         {userState.role === "CLAIM_ASSESSOR" && <button className='p-2 rounded-md bg-red-500 text-white' onClick={handleDeleteReport}>Delete Report</button>}
                     </div>
                     <div className='flex justify-center mb-6'>
-                        <div className='flex overflow-auto w-3/4 mt-16'>
+                        <div className='flex overflow-auto mt-16'>
                             {docWiseReport.map((docReport, idx) => (
                                 <button
                                     key={idx}
@@ -102,7 +102,7 @@ function ReportPage() {
                 </div>
                 <hr />
 
-                <div className='m-8'>
+                <div className='m-8 rounded-lg p-10 bg-color-turq bg-opacity-30 border-2 border-color-turq'>
                     <h1 className='text-lg font-bold'>Consildated Summary</h1>
                     <br />
                     <p>{summary}</p>
@@ -113,7 +113,7 @@ function ReportPage() {
                 </div>
                 <hr />
 
-                <div className='m-8'>
+                <div className='m-8 rounded-lg p-10 border-2 border-color-turq'>
                     <h1 className='text-lg font-bold'>Alternate Treatments</h1>
                     <div className='mt-2 mb-6'>
                         <h1 className='font-semibold'>Estimated cost: {totalCost}</h1>
@@ -123,10 +123,10 @@ function ReportPage() {
                             onClick={() => setActiveTreatmentType(t)}>{t}</button>
                     ))}
 
-                    <table className='mt-3 border-collapse border border-slate-300'>
+                    <table className='mt-3 border-collapse border border-slate-300 w-full'>
                         <thead>
                             <tr>
-                                <th className='p-5 border border-slate-300'>Treatment Description</th>
+                                <th className='p-5 border border-slate-300 w-full'>Treatment Description</th>
                                 <th className='p-5 border border-slate-300'>Cost</th>
                             </tr>
                         </thead>
