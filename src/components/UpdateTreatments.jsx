@@ -74,8 +74,8 @@ const UpdateTreatments = ({ report, headers, reportId }) => {
         )}
         <div className={`p-2 ${loading && 'blur-sm pointer-events-none'}`}>
             <div className='m-2 p-2'>
-                <div className='flex justify-between'>
-                    <h1 className='my-6 font-bold'>Edit Alternate Treatments</h1>
+                <div className='flex justify-between items-center'>
+                    <h1 className='my-6 font-bold text-xl'>Edit Alternate Treatments</h1>
                     <button className='h-10 px-3 rounded-md bg-color-dark text-white' onClick={handleGenAltTreatments}>Generate new alternate treatments</button>
                     <button className='h-10 px-3 rounded-md bg-color-teal text-white' onClick={() => handleAddTreatment()}>Add new</button>
                 </div>
@@ -91,10 +91,10 @@ const UpdateTreatments = ({ report, headers, reportId }) => {
                             <div className='w-[10%]'>
                                 <input className='h-10 w-full' type="number" name={`Cost_${idx}`} defaultValue={altTreatement.Cost} />
                             </div>
-                            <div className='w-[5%] cursor-pointer rounded-md self-start h-10 bg-red-500 text-white m-2 p-2' onClick={() => handleRemoveTreatment(idx)}>Delete</div>
+                            <div className='cursor-pointer rounded-lg h-10 bg-red-500 text-white mx-2 p-2' onClick={() => handleRemoveTreatment(idx)}>Delete</div>
                         </div>
                     ))}
-                    <button className={`inline-block self-center p-2 m-2 mt-4 text-white rounded-md bg-color-blue`} type="submit">Submit</button>
+                    <button className={`inline-block self-center p-2 my-2 mt-4 text-white rounded-md bg-color-blue`} type="submit">Submit</button>
                 </form>
             </div>
 

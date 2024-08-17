@@ -73,7 +73,7 @@ const UpdateDocwise = ({ report, headers, reportId }) => {
         <div className={`p-2 ${loading && 'blur-sm pointer-events-none'}`}>
             <div className='m-2 p-2'>
                 <div className='flex justify-between'>
-                    <h1 className='my-6 font-bold'>Edit Report Wise Summary</h1>
+                    <h1 className='my-6 font-bold text-xl'>Edit Report Wise Summary</h1>
                     <button className='h-10 px-3 rounded-md bg-color-dark text-white m-2 p-2' onClick={handleGenDocWise}>Generate new report wise summary</button>
                 </div>
                 <div className='flex'>
