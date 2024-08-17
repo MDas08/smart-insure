@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux';
 import { removeUser } from '../store/userSlice'
 import axios from '../utils/axiosConf'
+import Dashboard from './Dashboard'
 
 const ViewUser = () => {
     const user = useLoaderData()
@@ -44,6 +45,7 @@ const ViewUser = () => {
     }
 
     return (<>
+    
         {loading && (
             <div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
                 <div className="text-xl font-semibold text-gray-700">
@@ -103,6 +105,7 @@ const ViewUser = () => {
                 </div>}
             </div>
         </div>
+
     </>)
 }
 

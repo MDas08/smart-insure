@@ -3,7 +3,7 @@ import React from 'react'
 const Footer = () => {
   return (
     <body className='mt-auto'>
-    <footer className="bg-gray-800 text-white py-8 mt-auto">
+    <footer className="bg-gray-800 text-white py-8 mt-20">
       <div className="container mx-auto flex flex-col items-center gap-4">
         <p className="text-center">&copy; Copyright 2024 Smart-Insure</p>
         <nav className="flex gap-4">

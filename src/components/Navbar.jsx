@@ -1,20 +1,27 @@
 import React from 'react'
+import { removeUser } from '../store/userSlice'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
 
 function Navbar() {
   const navigate = useNavigate()
+  const userState = useSelector(state => state.user)
+  const [userLoggedIn, setLogin] = useState(userState.authToken?true:false)
 
-  // const headers = {
-  //   headers: {
-  //     Authorization: `Bearer ${userState.authToken}`
-  //   }
-  // }
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${userState.authToken}`
+    }
+  }
 
-  // function logout() {
-  //   dispatch(removeUser())
-  //   localStorage.removeItem('authToken')
-  //   return navigate('/login')
-  // }
+  const dispatch = useDispatch()
+  
+  function logout() {
+    dispatch(removeUser())
+    localStorage.removeItem('authToken')
+    return navigate('/home')
+  }
 
   return (
 
@@ -33,9 +40,12 @@ function Navbar() {
           <li><button className='p-4 bg-transparent hover:bg-color-dark'
             onClick={() => navigate(`/my-profile`)}
             key={"profile"}>Profile</button></li>
-
-          {/* <li><button className='p-4 bg-transparent hover:bg-color-dark'
-            onClick={logout}>Log Out</button></li> */}
+          {userState.authToken?
+          <li><button className='p-4 bg-transparent hover:bg-color-dark'
+                onClick={logout}>Log Out</button></li>
+            :<button className='p-4 bg-transparent hover:bg-color-dark'
+            onClick={() => navigate(`/login`)}>Log In</button>}
+          
         </ul>
       </div>
     </div>
@@ -43,3 +53,6 @@ function Navbar() {
 }
 
 export default Navbar
+
+//<li><button className='p-4 bg-transparent hover:bg-color-dark'
+//onClick={logout}>Log Out</button></li>

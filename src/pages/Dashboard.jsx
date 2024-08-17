@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import axios from '../utils/axiosConf'
 import { useSelector } from 'react-redux'
 
+
 const Dashboard = () => {
     const navigate = useNavigate()
     const loaderData = useLoaderData()
@@ -38,13 +39,15 @@ const Dashboard = () => {
     }
 
     return (<>
+    
         <div className='w-full'>
+
             {userState.role === "CLAIM_ASSESSOR" && <>
                 <h1 className='font-medium text-3xl text-center m-10'>Pending Claims</h1>
             </>}
 
             {userState.role === "POLICY_HOLDER" && <>
-                <h1 className='font-medium text-3xl text-center m-10'>Claims Filed</h1>
+                <h1 className='font-medium text-3xl text-center m-10'>Claims raised by me</h1>
             </>}
 
             <form ref={formRef} onSubmit={handleFormSubmit}>
