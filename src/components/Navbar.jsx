@@ -7,16 +7,16 @@ import { useDispatch, useSelector } from 'react-redux';
 function Navbar() {
   const navigate = useNavigate()
   const userState = useSelector(state => state.user)
-  const [userLoggedIn, setLogin] = useState(userState.authToken?true:false)
+  // const [userLoggedIn, setLogin] = useState(userState.authToken ? true : false)
 
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${userState.authToken}`
-    }
-  }
+  // const headers = {
+  //   headers: {
+  //     Authorization: `Bearer ${userState.authToken}`
+  //   }
+  // }
 
   const dispatch = useDispatch()
-  
+
   function logout() {
     dispatch(removeUser())
     localStorage.removeItem('authToken')
@@ -40,12 +40,20 @@ function Navbar() {
           <li><button className='p-4 bg-transparent hover:bg-color-dark'
             onClick={() => navigate(`/my-profile`)}
             key={"profile"}>Profile</button></li>
-          {userState.authToken?
-          <li><button className='p-4 bg-transparent hover:bg-color-dark'
-                onClick={logout}>Log Out</button></li>
-            :<button className='p-4 bg-transparent hover:bg-color-dark'
-            onClick={() => navigate(`/login`)}>Log In</button>}
-          
+          {userState.authToken ?
+            <li><button className='p-4 bg-transparent hover:bg-color-dark'
+              onClick={logout}>Log Out</button></li>
+            : <div>
+              <button className='p-4 bg-transparent hover:bg-color-dark'
+                onClick={() => navigate(`/login`)}>Log In</button>
+              <button className='p-4 bg-transparent hover:bg-color-dark'
+                onClick={()=>navigate("/signup")}
+                key={"signup"}>Sign Up</button>
+            </div>}
+          {/* {!userState.authToken?
+          <li>
+            :null}  */}
+
         </ul>
       </div>
     </div>
@@ -56,3 +64,5 @@ export default Navbar
 
 //<li><button className='p-4 bg-transparent hover:bg-color-dark'
 //onClick={logout}>Log Out</button></li>
+//<button className='p-4 bg-transparent hover:bg-color-dark'
+//                onClick={navigate("/home")}>Sign Up</button>

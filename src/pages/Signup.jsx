@@ -55,11 +55,12 @@ const Signup = () => {
                 </div>
             </div>
         )}
-        <div className={`${loading && 'pointer-events-none'}`}>
-            <div className='my-10 flex flex-col items-center'>
+        <div className={`${loading && 'pointer-events-none'} `}>
+            <div className='flex justify-center'>
+            <div className='my-10 flex flex-col items-center border-2 border-color-turq bg-color-turq bg-opacity-30 p-10 rounded-lg'>
                 <form ref={formRef} onSubmit={handleSubmit} className='flex flex-col'>
                     <label htmlFor="email">Email</label>
-                    <input className='h-10 mb-5' type="email" name='email' />
+                    <input className='h-10 mb-5 bord' type="email" name='email' />
                     <label htmlFor="password">Password</label>
                     <input className='h-10 mb-5' type="password" name='password' />
                     <label htmlFor="confirmPassword">Confirm Password</label>
@@ -74,15 +75,16 @@ const Signup = () => {
                     <input className='h-10 mb-5' type="text" name='address' />
                     <label htmlFor="phone">Phone number</label>
                     <input className='h-10 mb-5' type="tel" pattern="[0-9]{10}" name='phone' />
-                    <div className='flex'>
+                    <div >
                         <div>
                             <label htmlFor="otp">OTP (Enter the most recent one received)</label>
                             <input className='h-10' type="number" name='otp' />
                         </div>
-                        <div onClick={handleSendOtp} className='rounded-md inline-block cursor-pointer m-2 p-1 border-4 border-slate-600'>Send otp</div>
+                        <button onClick={handleSendOtp} className='flex py-1 px-2 bg-color-dark text-white hover:bg-color-blue rounded-lg items-center mt-2'>Send otp</button>
                     </div>
                     <button className='mt-10 block rounded-md m-3 p-3 text-white font-semibold bg-color-dark' type="submit">Create new account</button>
                 </form>
+            </div>
             </div>
         </div>
     </>)
