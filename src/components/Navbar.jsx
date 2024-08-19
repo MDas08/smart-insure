@@ -7,47 +7,40 @@ import { useDispatch, useSelector } from 'react-redux';
 function Navbar() {
   const navigate = useNavigate()
   const userState = useSelector(state => state.user)
-  // const [userLoggedIn, setLogin] = useState(userState.authToken ? true : false)
-
-  // const headers = {
-  //   headers: {
-  //     Authorization: `Bearer ${userState.authToken}`
-  //   }
-  // }
-
   const dispatch = useDispatch()
 
   function logout() {
     dispatch(removeUser())
     localStorage.removeItem('authToken')
-    return navigate('/home')
+    return navigate('/')
   }
 
   return (
 
     <div>
       <div className='flex bg-color-blue h-14 justify-end' >
-        <ul className='flex flex-row justify-end text-white mr-8'>
+        <ul className='flex flex-row justify-end text-white'>
 
           <li><button className='py-4 px-8 bg-transparent hover:bg-color-dark'
-            onClick={() => navigate(`/home`)}
+            onClick={() => navigate(`/`)}
             key={"home"}>Home</button></li>
 
-          <li><button className='p-4 bg-transparent hover:bg-color-dark'
-            onClick={() => navigate(`/`)}
+          <li><button className='py-4 px-8 bg-transparent hover:bg-color-dark'
+            onClick={() => navigate(`/my-profile`)}
             key={"dashboard"}>Dashboard</button></li>
 
-          <li><button className='p-4 bg-transparent hover:bg-color-dark'
+          {/* <li><button className='p-4 bg-transparent hover:bg-color-dark'
             onClick={() => navigate(`/my-profile`)}
-            key={"profile"}>Profile</button></li>
+            key={"profile"}>Profile</button></li> */}
+
           {userState.authToken ?
-            <li><button className='p-4 bg-transparent hover:bg-color-dark'
+            <li><button className='py-4 px-8 bg-transparent hover:bg-color-dark'
               onClick={logout}>Log Out</button></li>
             : <div>
-              <button className='p-4 bg-transparent hover:bg-color-dark'
+              <button className='py-4 px-8 bg-transparent hover:bg-color-dark'
                 onClick={() => navigate(`/login`)}>Log In</button>
-              <button className='p-4 bg-transparent hover:bg-color-dark'
-                onClick={()=>navigate("/signup")}
+              <button className='py-4 px-8 bg-transparent hover:bg-color-dark'
+                onClick={() => navigate("/signup")}
                 key={"signup"}>Sign Up</button>
             </div>}
           {/* {!userState.authToken?

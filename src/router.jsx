@@ -6,7 +6,7 @@ import ReportPage from "./pages/Report";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import axios from "./utils/axiosConf";
-import Dashboard from "./pages/Dashboard";
+//import Dashboard from "./pages/Dashboard";
 import store from './store/storeConf';
 import ViewClaim from "./pages/ViewClaim";
 import UpdateReport from "./pages/UpdateReport";
@@ -19,7 +19,7 @@ import HomePage from "./pages/HomePage";
 export const router = createBrowserRouter([
     {
         path: '/', element: <NavLayout />, children: [
-            { path: "", element: <Dashboard />, loader: dashboardLoader },
+            { path: "", element: <HomePage /> },
             { path: "new-claim", element: <ClaimInit />, loader: claimInitLoader },
             { path: "upload-docs/:claimId", element: <DocUpload />, loader: docUploadLoader },
             { path: "login", element: <Login /> },
@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
             { path: "my-profile", element: <MyProfile />, loader: myProfileLoader },
             { path: "edit-claim/:claimId", element: <EditClaim />, loader: editClaimLoader },
             { path: "signup", element: <Signup /> },
-            { path: "home", element: <HomePage/> },
+            //{ path: "home", element: <HomePage/> },
         ]
     }
 ])

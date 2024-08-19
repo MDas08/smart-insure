@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux';
 import { removeUser } from '../store/userSlice'
 import axios from '../utils/axiosConf'
-import Dashboard from './Dashboard'
+
 
 const ViewUser = () => {
     const user = useLoaderData()
@@ -44,8 +44,8 @@ const ViewUser = () => {
         }
     }
 
-    return (<>
-    
+    return (<div>
+
         {loading && (
             <div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
                 <div className="text-xl font-semibold text-gray-700">
@@ -54,12 +54,12 @@ const ViewUser = () => {
             </div>
         )}
         <div className={`flex justify-center items-center flex-col ${loading && 'blur-sm pointer-events-none'}`}>
-            <div>
+            <div className='w-full'>
                 <div className='flex justify-center'>
-                <button className='bg-color-turq px-4 py-2 m-4 text-white rounded-lg' onClick={logout}>Logout</button>
-                <button className='bg-color-dark px-4 py-2 m-4 text-white rounded-lg' onClick={deleteAccount}>Delete account</button>
+                    <button className='bg-color-turq px-4 py-2 m-4 text-white rounded-lg' onClick={logout}>Logout</button>
+                    <button className='bg-color-dark px-4 py-2 m-4 text-white rounded-lg' onClick={deleteAccount}>Delete account</button>
                 </div>
-                
+
                 {showPassInput && <div className='flex gap-1'>
                     <div>
                         <label htmlFor="password">Enter password</label>
@@ -67,7 +67,8 @@ const ViewUser = () => {
                     </div>
                     <button className='border-4 border-slate-400 m-2 p-2 rounded-md' onClick={() => setShowPassInput(false)}>Cancel</button>
                 </div>}
-                <table className='flex flex-col border-2 border-color-turq rounded-lg w-auto px-10 py-8 m-5'>
+                <div className='flex justify-center'>
+                    <table className='flex flex-col border-2 border-color-turq rounded-lg w-fit px-10 py-8 m-5'>
                         <tbody className='border-spacing-2'>
                             <tr>
                                 <th className='text-left'>Name</th>
@@ -91,22 +92,26 @@ const ViewUser = () => {
                             </tr>
                         </tbody>
                     </table>
-                
-                {userState.role === "POLICY_HOLDER" && <div>
-                    <p className='text-xl m-5 font-medium'>List of all claims filed:</p>
+                </div>
+                <div>
+                    <div className='font-medium text-3xl text-center my-5'>{
+                        userState.role === "CLAIM_ASSESSOR" ? <p>Pending Claims</p> : <p>Claims Raised by me</p>
+                    }</div>
                     {user.claims.length === 0 ?
-                        <p>No claims filed yet</p> :
-                        <div className='flex flex-row flex-wrap justify-center lg:justify-around'>
-                            {user.claims.map(claim => <div key={claim.id}>
-                                <ClaimTile key={uuid()} {...claim} />
+                        <div >{
+                            userState.role === "CLAIM_ASSESSOR" ? <p>No claims pending yet</p> : <p>No claims filed yet</p>
+                        }</div>
+                        : <div className='flex flex-row flex-wrap justify-center lg:justify-around'>
+                            {user.claims.map(claim => <div key={claim.id} className='md:w-2/3 lg:w-1/4'>
+                                <ClaimTile {...claim} />
                             </div>)}
                         </div>
                     }
-                </div>}
+                </div>
             </div>
         </div>
 
-    </>)
+    </div>)
 }
 
 export default ViewUser

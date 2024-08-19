@@ -4,7 +4,8 @@ import axios from '../utils/axiosConf'
 import { useSelector } from 'react-redux'
 import PdfViewer from './PdfViewer'
 
-const DocViewer = ({ documents, editable, claimId, setClaim = () => {} }) => {
+const DocViewer = ({ documents, editable, claimId, setClaim = () => { } }) => {
+
     const [loading, setLoading] = useState(false)
     const [docs, setDocs] = useState(documents)
     const userState = useSelector(state => state.user)
@@ -43,36 +44,43 @@ const DocViewer = ({ documents, editable, claimId, setClaim = () => {} }) => {
         setDocs([])
     }
 
-    return (<>
-        {loading && (
-            <div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
-                <div className="text-xl font-semibold text-gray-700">
-                    Loading...
+    return (<div className='flex justify-center'>
+        <div className='mt-20 w-3/4 -center'>
+            {loading && (
+                <div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
+                    <div className="text-xl font-semibold text-gray-700">
+                        Loading...
+                    </div>
                 </div>
-            </div>
-        )}
-        <h1>List of all documents uploaded for the claim</h1>
-        {editable && <button className='bg-red-500 m-2 p-2 text-white' onClick={onDeleteAllDocsHandle}>Delete all documents</button>}
-        {docs.map(doc => (<>
-            <div className={`${loading && 'pointer-events-none'}`} key={doc.id}>
-                {mime.lookup(doc.name).startsWith('image') && <>
-                    <div>
-                        <h2>{doc.originalName}</h2>
-                        <img className='h-64' src={doc.url} alt={doc.originalName} />
-                        {editable && <button className='bg-red-500 m-2 p-2 text-white' onClick={() => onDeleteDocHandle(doc.id)}>Delete</button>}
-                    </div>
-                </>}
+            )}
+            <h1 className='text-xl font-medium'>List of all documents uploaded for the claim</h1>
+            {editable && <button className='bg-red-500 hover:bg-red-700 my-2 px-4 py-2 rounded-lg text-white' onClick={onDeleteAllDocsHandle}>Delete all documents</button>}
+            {docs.map(doc => (<>
+                <div className={`${loading && 'pointer-events-none'}`} key={doc.id} >
+                    {mime.lookup(doc.name).startsWith('image') && <>
+                        <div className='my-5'>
+                            <a href={doc.url} target='_blank' rel="noreferrer noopener" className='flex py-2 px-4 rounded-lg text-white bg-color-turq hover:bg-color-blue justify-between'>
+                                <p>{doc.originalName}</p>
+                                <p>Click to view</p>
+                            </a>
+                            {/* <img className='h-64' src={doc.url} alt={doc.originalName} /> */}
+                            {editable && <button className='border-2 border-red-500 hover:bg-red-500 my-2 px-4 py-2 rounded-lg text-red-500 hover:text-white' onClick={() => onDeleteDocHandle(doc.id)}>Delete</button>}
+                        </div>
+                    </>}
 
-                {mime.lookup(doc.name) === ('application/pdf') && <>
-                    <div>
-                        <h2>{doc.originalName}</h2>
-                        <PdfViewer url={doc.url} />
-                        {editable && <button className='bg-red-500 m-2 p-2 text-white' onClick={() => onDeleteDocHandle(doc.id)}>Delete</button>}
-                    </div>
-                </>}
-            </div>
-        </>))}
-    </>)
+                    {mime.lookup(doc.name) === ('application/pdf') && <>
+                        <div className='my-5'>
+                            <a href={doc.url} target='_blank' rel="noreferrer noopener" className='flex py-2 px-4 rounded-lg text-white bg-color-turq hover:bg-color-blue justify-between'>
+                                <p>{doc.originalName}</p>
+                                <p>Click to view</p>
+                            </a>
+                            {editable && <button className='border-2 border-red-500 hover:bg-red-500 my-2 px-4 py-2 rounded-lg text-red-500 hover:text-white' onClick={() => onDeleteDocHandle(doc.id)}>Delete</button>}
+                        </div>
+                    </>}
+                </div>
+            </>))}
+        </div>
+    </div>)
 }
 
 export default DocViewer;

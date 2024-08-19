@@ -57,9 +57,12 @@ const EditClaim = () => {
 			</div>
 		)}
 		<div className={`${loading && 'pointer-events-none'}`}>
+			<div className='flex justify-center mt-10'>
+				<button className='bg-color-dark hover:bg-color-blue py-2 px-4 rounded-lg text-white' onClick={() => navigate(`/view-claim/${claim.id}`)}>Back to Claim</button>
+			</div>
 			<form ref={formRef}>
 				<div className='flex flex-col items-center'>
-					<div id='title' className='text-2xl bg-color-turq rounded-2xl w-4/5 h-16 content-center my-6'>
+					<div id='title' className='text-2xl bg-color-turq rounded-2xl w-4/5 h-16 content-center mb-6 mt-10'>
 						<h1 className='pl-6 text-left text-white'>Claim Initiation</h1>
 					</div>
 					<div className='flex md:flex-row flex-col w-4/5 justify-center items-center md:items-start space-y-4 md:space-y-0'>
@@ -75,14 +78,14 @@ const EditClaim = () => {
 							<label className='mr-auto'>Claim Amount</label>
 							<input name="claimAmount" type='number' defaultValue={claim.claimAmount} />
 							<label className='mr-auto'>Claim Category Type</label>
-							<select defaultValue={claim.claimType} name='claimType' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-11/12 rounded-lg border-2 border-color-turq">
+							<select defaultValue={claim.claimType} name='claimType' className="px-4 py-0.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full rounded-lg border-2 border-color-turq">
 								<option value="Cashless">Cashless</option>
 								<option value="Reimbursement">Reimbursement</option>
 							</select>
 						</div>
 					</div>
 
-					<div id='title' className='text-2xl bg-color-turq rounded-2xl w-4/5 h-16 content-center my-6'>
+					<div id='title' className='text-2xl bg-color-turq rounded-2xl w-4/5 h-16 content-center mb-6 mt-20'>
 						<h1 className='pl-6 text-left text-white'>Patient Details</h1>
 					</div>
 					<div className='flex md:flex-row flex-col w-4/5 justify-center items-center md:items-start space-y-4 md:space-y-0'>
@@ -92,7 +95,7 @@ const EditClaim = () => {
 						</div>
 					</div>
 
-					<div id='title' className='text-2xl bg-color-turq rounded-2xl w-4/5 h-16 content-center my-6'>
+					<div id='title' className='text-2xl bg-color-turq rounded-2xl w-4/5 h-16 content-center mb-6 mt-20'>
 						<h1 className='pl-6 text-left text-white'>Hospital Details</h1>
 					</div>
 					<div className='flex md:flex-row flex-col w-4/5 justify-center items-center md:items-start space-y-4 md:space-y-0'>
@@ -107,13 +110,16 @@ const EditClaim = () => {
 							<input defaultValue={claim.hospCode} name="hospCode" type='text' />
 						</div>
 					</div>
-					<div className='flex gap-x-5'>
-						<div onClick={submit} className='bg-color-turq cursor-pointer inline-block text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Continue</div>
-						<div className='h-10 inline-block cursor-pointer rounded-md p-2 m-2 bg-red-500 text-white' onClick={handleDeleteClaim}>Delete claim</div>
+					<div className='flex space-x-5 justify-center mt-10'>
+						<button onClick={submit} className='bg-color-turq hover:bg-color-blue py-2 px-4 rounded-lg text-white'>Continue</button>
+						<button className='bg-red-500 hover:bg-red-700 py-2 px-4 rounded-lg text-white' onClick={handleDeleteClaim}>Delete claim</button>
 					</div>
 				</div>
 			</form>
 			<DocViewer setClaim={setClaim} editable={true} documents={Array.from(claim.documents ?? [])} claimId={claimId} />
+			<div className='flex justify-center'>
+				<button className='bg-color-dark hover:bg-color-blue py-2 px-4 rounded-lg text-white' onClick={() => navigate(`/view-claim/${claim.id}`)}>Back to Claim</button>
+			</div>
 		</div>
 	</>);
 };

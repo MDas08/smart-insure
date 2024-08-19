@@ -96,20 +96,6 @@ const ViewClaim = () => {
                     </table>
                 </div>
             </form>
-            <div className='flex flex-col'>
-                <h1 className='mx-2 md:mx-10 mb-2 mt-10 py-2 px-4 text-xl font-medium'>List of Uploaded Documents</h1>
-            {Array.from(claim.documents).map((doc)=>(
-                <button key={doc.id} 
-                title={doc.id}
-                className='bg-color-blue hover:bg-color-turq text-white rounded-lg mx-2 md:mx-10 my-2 py-2 px-4 text-left'
-                //onClick={}
-                >{doc.originalName}</button>
-            ))}
-            </div>
-            
-
-            
-            
             <DocViewer editable={false} documents={Array.from(claim.documents)} claimId={claim.id} />
         </div>
     </>);
