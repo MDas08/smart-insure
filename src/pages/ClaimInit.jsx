@@ -41,7 +41,8 @@ const ClaimInit = () => {
 			alert(res.data.err)
 			return
 		}
-		return navigate('/')
+		console.log(res)
+		//return navigate(`upload-docs/${claim.id}`)
 	};
 
 	async function getPolicy() {
@@ -83,7 +84,7 @@ const ClaimInit = () => {
 							<label className='mr-auto'>Claim Amount</label>
 							<input name="claimAmount" type='number' />
 							<label className='mr-auto'>Claim Category Type</label>
-							<select name='claimType' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-11/12 rounded-lg border-2 border-color-turq">
+							<select name='claimType' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-lg border-2 border-color-turq">
 								<option value="Cashless">Cashless</option>
 								<option value="Reimbursement">Reimbursement</option>
 							</select>

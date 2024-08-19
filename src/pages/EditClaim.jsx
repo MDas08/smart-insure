@@ -36,7 +36,7 @@ const EditClaim = () => {
 			return
 		}
 		alert(res.data.msg)
-		return navigate('/')
+		return navigate(`/upload-docs/${claim.id}`)
 	};
 
 	async function handleDeleteClaim() {

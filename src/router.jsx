@@ -6,7 +6,7 @@ import ReportPage from "./pages/Report";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import axios from "./utils/axiosConf";
-//import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import store from './store/storeConf';
 import ViewClaim from "./pages/ViewClaim";
 import UpdateReport from "./pages/UpdateReport";
@@ -20,6 +20,7 @@ export const router = createBrowserRouter([
     {
         path: '/', element: <NavLayout />, children: [
             { path: "", element: <HomePage /> },
+            { path: "dash", element: <Dashboard />, loader: dashboardLoader },
             { path: "new-claim", element: <ClaimInit />, loader: claimInitLoader },
             { path: "upload-docs/:claimId", element: <DocUpload />, loader: docUploadLoader },
             { path: "login", element: <Login /> },
@@ -85,12 +86,55 @@ async function myProfileLoader() {
             Authorization: `Bearer ${userState.authToken}`
         }
     }
-    const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/user/my-details`, header)
-    if (res.data.err) {
-        alert(res.data.err)
-        return redirect('/')
-    }
-    return res.data.msg
+
+    // const resUser = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/user/my-details`, header)
+    // if (resUser.data.err) {
+    //     alert(resUser.data.err)
+    //     return redirect('/')
+    // }
+    //return res.data.msg
+
+    // let res = ''
+    // if (userState.role === 'CLAIM_ASSESSOR') {
+    //     res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/pending`, header)
+    // } else if (userState.role === "POLICY_HOLDER") {
+    //     res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/my-claims`, header)
+    // } else {
+    //     return { err: 'Invalid role' }
+    // }
+
+    // if (res.data.err) {
+    //     alert(res.data.err)
+    //     return { err: res.data.err }
+    // }
+    // console.log(resUser.data.msg)
+    // console.log(res.data.msg)
+    // return (resUser.data.msg + res.data.msg)
+
+    const [resUser, resClaims] = await Promise.all([
+        axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/user/my-details`, header),
+        userState.role === 'CLAIM_ASSESSOR'
+          ? axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/pending`, header)
+          : axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/my-claims`, header),
+      ]);
+    
+      // Check for errors in each response
+      if (resUser.data.err) {
+        alert(resUser.data.err);
+        return redirect('/');
+      } else if (resClaims.data.err) {
+        alert(resClaims.data.err);
+        return { err: resClaims.data.err };
+      }
+    
+      // Combine data into a single response object
+      const response = {
+        userDetails: resUser.data.msg, // Assuming data contains user details
+        claims: resClaims.data.msg, // Assuming data contains claims
+      };
+      
+      return response;
+    
 }
 
 function docUploadLoader() {

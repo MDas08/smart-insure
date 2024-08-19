@@ -27,7 +27,7 @@ function Navbar() {
 
           <li><button className='py-4 px-8 bg-transparent hover:bg-color-dark'
             onClick={() => navigate(`/my-profile`)}
-            key={"dashboard"}>Dashboard</button></li>
+            key={"dashboard"}>My Profile</button></li>
 
           {/* <li><button className='p-4 bg-transparent hover:bg-color-dark'
             onClick={() => navigate(`/my-profile`)}

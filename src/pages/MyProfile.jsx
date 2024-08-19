@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react'
-import { useLoaderData, useNavigate } from 'react-router-dom'
+import { Navigate, useLoaderData, useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 import ClaimTile from '../components/ClaimTile'
-import { v4 as uuid } from 'uuid'
+//import { v4 as uuid } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux';
 import { removeUser } from '../store/userSlice'
 import axios from '../utils/axiosConf'
@@ -10,12 +10,21 @@ import axios from '../utils/axiosConf'
 
 const ViewUser = () => {
     const user = useLoaderData()
+    
+    //const loaderData = useLoaderData()
+    //const [claims, setClaims] = useState(loaderData)
     const dispatch = useDispatch()
     const [loading, setLoading] = useState()
     const [showPassInput, setShowPassInput] = useState(false)
     const userState = useSelector(state => state.user)
     const passwdRef = useRef()
     const navigate = useNavigate()
+
+    // if (loaderData.err) return navigate('/error', loaderData.err)
+
+    // if (!userState.authToken) {
+    //     return <Navigate to='/login' />
+    // }
 
     function logout() {
         dispatch(removeUser())
@@ -43,6 +52,8 @@ const ViewUser = () => {
             setShowPassInput(true)
         }
     }
+
+    
 
     return (<div>
 
@@ -72,23 +83,23 @@ const ViewUser = () => {
                         <tbody className='border-spacing-2'>
                             <tr>
                                 <th className='text-left'>Name</th>
-                                <td>{user.firstName} {user.lastName}</td>
+                                <td>{user.userDetails.firstName} {user.userDetails.lastName}</td>
                             </tr>
                             <tr>
                                 <th className='text-left'>Age</th>
-                                <td>{dayjs().diff(user.dob, 'year')} Years</td>
+                                <td>{dayjs().diff(user.userDetails.dob, 'year')} Years</td>
                             </tr>
                             <tr>
                                 <th className='text-left'>Role</th>
-                                <td>{user.role}</td>
+                                <td>{user.userDetails.role}</td>
                             </tr>
                             <tr>
                                 <th className='text-left'>Address</th>
-                                <td>{user.address}</td>
+                                <td>{user.userDetails.address}</td>
                             </tr>
                             <tr>
                                 <th className='text-left'>Phone</th>
-                                <td>{user.phone}</td>
+                                <td>{user.userDetails.phone}</td>
                             </tr>
                         </tbody>
                     </table>

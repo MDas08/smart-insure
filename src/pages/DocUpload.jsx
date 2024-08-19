@@ -7,7 +7,11 @@ function FileItem({ name, index, totalIndex, maxUploads }) {
     if (totalIndex > maxUploads - 1) {
         return null;
     }
-    return <li className='flex px-4 py-2 bg-color-teal rounded-lg my-2 w-full overflow-hidden bg-opacity-50' key={index}>{name}</li>
+    return <li className='flex px-4 py-2 bg-color-teal rounded-lg my-2 w-full overflow-hidden bg-opacity-50 items-center justify-around' key={index}>{name}
+        <select name='fileType' className="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-lg border-2 border-color-turq">
+            <option value="Text Report">Text Report or Bills</option>
+            <option value="Scans/Images">Scans or Images</option>
+        </select></li>
 }
 
 function DocUpload() {
@@ -99,22 +103,25 @@ function DocUpload() {
                         {uploadedFiles.length > 0 && (
                             <ul className='content-center'>
                                 {uploadedFiles.map((file, index) => (
-                                    <FileItem
-                                        name={file.name}
-                                        index={index}
-                                        totalIndex={uploadedFiles.length + index}
-                                        maxUploads={maxUploads}
-                                    />
+                                    <div>
+                                        <FileItem
+                                            name={file.name}
+                                            index={index}
+                                            totalIndex={uploadedFiles.length + index}
+                                            maxUploads={maxUploads}
+                                        />
+                                    </div>
                                 ))}
                             </ul>
                         )}
                     </div>
 
                     <div className='flex flex-col mt-6 border-4 rounded-lg border-color-turq p-6 h-40 max-w-4xl overflow-y-auto bg-color-teal bg-opacity-50'>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p> <span className='font-medium'>Document upload warning:</span>
+                        <br/>
+                            For efficient processing of your medical insurance claim, we utilize advanced AI technology to analyze submitted documents. 
+                            To safeguard your protected health information (PHI), <span className='font-bold'> please redact any personal details such as names, dates of birth, UHID, and member ID numbers. </span>
+                            This crucial step helps maintain your privacy and ensures a smooth claims process.</p>
                     </div>
 
                     {!isSubmitted &&
@@ -127,7 +134,7 @@ function DocUpload() {
                         (
                             <div className='mt-10'>
                                 <p>Documents submitted!</p>
-                                <button onClick={() => navigate('/')} className='bg-color-turq text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Dashboad</button>
+                                <button onClick={() => navigate('/my-profile')} className='bg-color-turq text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Dashboard</button>
                             </div>
                         )
                     }
