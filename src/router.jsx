@@ -87,64 +87,50 @@ async function myProfileLoader() {
         }
     }
 
-    // const resUser = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/user/my-details`, header)
-    // if (resUser.data.err) {
-    //     alert(resUser.data.err)
-    //     return redirect('/')
-    // }
-    //return res.data.msg
-
-    // let res = ''
-    // if (userState.role === 'CLAIM_ASSESSOR') {
-    //     res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/pending`, header)
-    // } else if (userState.role === "POLICY_HOLDER") {
-    //     res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/my-claims`, header)
-    // } else {
-    //     return { err: 'Invalid role' }
-    // }
-
-    // if (res.data.err) {
-    //     alert(res.data.err)
-    //     return { err: res.data.err }
-    // }
-    // console.log(resUser.data.msg)
-    // console.log(res.data.msg)
-    // return (resUser.data.msg + res.data.msg)
-
     const [resUser, resClaims] = await Promise.all([
         axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/user/my-details`, header),
         userState.role === 'CLAIM_ASSESSOR'
-          ? axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/pending`, header)
-          : axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/my-claims`, header),
-      ]);
-    
-      // Check for errors in each response
-      if (resUser.data.err) {
+            ? axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/pending`, header)
+            : axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/my-claims`, header),
+    ]);
+
+    // Check for errors in each response
+    if (resUser.data.err) {
         alert(resUser.data.err);
         return redirect('/');
-      } else if (resClaims.data.err) {
+    } else if (resClaims.data.err) {
         alert(resClaims.data.err);
         return { err: resClaims.data.err };
-      }
-    
-      // Combine data into a single response object
-      const response = {
+    }
+
+    // Combine data into a single response object
+    const response = {
         userDetails: resUser.data.msg, // Assuming data contains user details
         claims: resClaims.data.msg, // Assuming data contains claims
-      };
-      
-      return response;
-    
+    };
+
+    return response;
+
 }
 
-function docUploadLoader() {
+async function docUploadLoader(req) {
     const userState = store.getState().user
     if (!userState.authToken) return redirect('/login')
     if (userState.role === "CLAIM_ASSESSOR") {
         alert('Only policy holders can upload document on their claims')
         return redirect('/')
     }
-    return null
+    const header = {
+        headers: {
+            Authorization: `Bearer ${userState.authToken}`
+        }
+    }
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/document/count/${req.params.claimId}`, header)
+    if (res.data.err) {
+        alert(res.data.err)
+        return redirect('/')
+    }
+    return (15 - res.data.msg)
 }
 
 function claimInitLoader() {

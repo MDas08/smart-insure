@@ -41,8 +41,7 @@ const ClaimInit = () => {
 			alert(res.data.err)
 			return
 		}
-		console.log(res)
-		//return navigate(`upload-docs/${claim.id}`)
+		return navigate(`/upload-docs/${res.data.msg.split(': ')[1]}`)
 	};
 
 	async function getPolicy() {
