@@ -87,6 +87,7 @@ function DocUpload() {
                 <div className='flex flex-col items-center'>
                     <h1 className='mt-10 text-lg'>Cannot upload more documents for the claim</h1>
                     <p>Maximum number of files (ie 15) is already uploaded for this document. Delete some documents and try again</p>
+                    <button onClick={() => navigate('/')} className='bg-color-turq text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Dashboard</button>
                 </div>
             )}
 
@@ -140,7 +141,7 @@ function DocUpload() {
                         (
                             <div className='mt-10'>
                                 <p>Documents submitted!</p>
-                                <button onClick={() => navigate('/my-profile')} className='bg-color-turq text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Dashboard</button>
+                                <button onClick={() => navigate('/')} className='bg-color-turq text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Dashboard</button>
                             </div>
                         )
                     }
