@@ -77,7 +77,7 @@ const UpdateTreatments = ({ report, headers, reportId }) => {
                 <div className='flex justify-between items-center'>
                     <h1 className='my-6 font-bold text-xl'>Edit Alternate Treatments</h1>
                     <button className='h-10 px-3 rounded-md bg-color-dark text-white' onClick={handleGenAltTreatments}>Generate new alternate treatments</button>
-                    <button className='h-10 px-3 rounded-md bg-color-teal text-white' onClick={() => handleAddTreatment()}>Add new</button>
+                    <button className='h-10 px-3 rounded-md bg-color-teal' onClick={() => handleAddTreatment()}>Add new</button>
                 </div>
                 <form onSubmit={handleAltTreatmentsSubmit} ref={treatmentsFormRef}>
                     {altTreatements.map((altTreatement, idx) => (

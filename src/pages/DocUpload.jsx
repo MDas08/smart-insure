@@ -1,46 +1,42 @@
 import axios from '../utils/axiosConf';
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
-function FileItem({ name, index, totalIndex, maxUploads }) {
-    if (totalIndex > maxUploads - 1) {
-        return null;
-    }
+function FileItem({ name, index }) {
     return <li className='flex px-4 py-2 bg-color-teal rounded-lg my-2 w-full overflow-hidden bg-opacity-50 items-center justify-around' key={index}>{name}
-        <select name='fileType' className="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-lg border-2 border-color-turq">
-            <option value="Text Report">Text Report or Bills</option>
-            <option value="Scans/Images">Scans or Images</option>
-        </select></li>
+        <select name={`fileType_${index}`} className="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-lg border-2 border-color-turq">
+            <option value="TEXT">Text Report or Bills</option>
+            <option value="SCAN">Scans or Images</option>
+        </select>
+    </li>
 }
 
 function DocUpload() {
+    const formRef = useRef()
     const { claimId } = useParams()
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [isSubmitted, setSubmitted] = useState(false)
-    const [maxUploads, setMaxUploads] = useState(15)
+    const maxUploads = useLoaderData()
     const [loading, setLoading] = useState(false)
     const userState = useSelector(state => state.user)
     const navigate = useNavigate()
+
+    function arrangeObject(obj) {
+        const result = [];
+        Object.keys(obj).forEach(key => {
+            const index = key.split('_')[1]
+            result[index] = obj[key];
+        });
+
+        return result;
+    }
 
     const headers = {
         headers: {
             Authorization: `Bearer ${userState.authToken}`
         }
     }
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true)
-            const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/document/count/${claimId}`, headers)
-            if (res.data.err) alert(res.data.err)
-            setLoading(false)
-            setMaxUploads(15 - res.data.msg)
-        }
-
-        fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     function handleFileInputChange(event) {
         const newFiles = event.target.files;
@@ -61,10 +57,14 @@ function DocUpload() {
         if (uploadedFiles.length > maxUploads) {
             alert('too many files');
         }
+        const fileTypeData = arrangeObject(Object.fromEntries(new FormData(formRef.current)))
         const data = new FormData()
-        uploadedFiles.forEach(file => data.append('files', file))
+        uploadedFiles.forEach((file, i) => {
+            data.append('files', file)
+        })
+        data.append('fileTypes', fileTypeData)
         setLoading(true)
-        const res = await axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/document/upload/${claimId}`, data, headers)
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/document/upload/${claimId}`, data, { ...headers, 'Content-Type': 'multipart/form-data' })
         setLoading(false)
         if (res.data.err) {
             alert(res.data.err)
@@ -82,19 +82,27 @@ function DocUpload() {
                     </div>
                 </div>
             )}
+
+            {maxUploads === 0 && (
+                <div className='flex flex-col items-center'>
+                    <h1 className='mt-10 text-lg'>Cannot upload more documents for the claim</h1>
+                    <p>Maximum number of files (ie 15) is already uploaded for this document. Delete some documents and try again</p>
+                </div>
+            )}
+
             <div className={`p-8 ${loading && 'blur-sm pointer-events-none'} flex flex-col items-center`}>
-                {!isSubmitted &&
+                {(!isSubmitted && maxUploads !== 0) &&
                     (
                         <h1 className='mt-10 text-lg'>Upload your documents below</h1>
                     )
                 }
 
-                <form onSubmit={handleFileInputSubmit}>
-                    {!isSubmitted &&
+                <form onSubmit={handleFileInputSubmit} ref={formRef}>
+                    {(!isSubmitted && maxUploads !== 0) &&
                         (
                             <div>
                                 <input type='file' name='files' multiple className='mt-6' onChange={handleFileInputChange} />
-                                <p className='mt-3'>Maximum {maxUploads} files allowed</p>
+                                <p className='mt-3'>Maximum {maxUploads} {maxUploads === 1 ? 'file' : 'files'} allowed</p>
                             </div>
                         )
                     }
@@ -103,12 +111,10 @@ function DocUpload() {
                         {uploadedFiles.length > 0 && (
                             <ul className='content-center'>
                                 {uploadedFiles.map((file, index) => (
-                                    <div>
+                                    <div key={index}>
                                         <FileItem
                                             name={file.name}
                                             index={index}
-                                            totalIndex={uploadedFiles.length + index}
-                                            maxUploads={maxUploads}
                                         />
                                     </div>
                                 ))}
@@ -118,13 +124,13 @@ function DocUpload() {
 
                     <div className='flex flex-col mt-6 border-4 rounded-lg border-color-turq p-6 h-40 max-w-4xl overflow-y-auto bg-color-teal bg-opacity-50'>
                         <p> <span className='font-medium'>Document upload warning:</span>
-                        <br/>
-                            For efficient processing of your medical insurance claim, we utilize advanced AI technology to analyze submitted documents. 
+                            <br />
+                            For efficient processing of your medical insurance claim, we utilize advanced AI technology to analyze submitted documents.
                             To safeguard your protected health information (PHI), <span className='font-bold'> please redact any personal details such as names, dates of birth, UHID, and member ID numbers. </span>
                             This crucial step helps maintain your privacy and ensures a smooth claims process.</p>
                     </div>
 
-                    {!isSubmitted &&
+                    {(!isSubmitted && maxUploads !== 0) &&
                         (
                             <button type="submit" className='bg-color-turq text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Upload</button>
                         )

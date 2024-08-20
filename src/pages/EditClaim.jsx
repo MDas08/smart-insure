@@ -57,8 +57,9 @@ const EditClaim = () => {
 			</div>
 		)}
 		<div className={`${loading && 'pointer-events-none'}`}>
-			<div className='flex justify-center mt-10'>
+			<div className='flex justify-center mt-10 gap-x-5'>
 				<button className='bg-color-dark hover:bg-color-blue py-2 px-4 rounded-lg text-white' onClick={() => navigate(`/view-claim/${claim.id}`)}>Back to Claim</button>
+				<button className='bg-color-teal hover:bg-color-blue py-2 px-4 rounded-lg' onClick={() => navigate(`/upload-docs/${claim.id}`)}>Upload documents</button>
 			</div>
 			<form ref={formRef}>
 				<div className='flex flex-col items-center'>

@@ -31,7 +31,6 @@ const ViewClaim = () => {
         alert('Report generated for this claim successfully')
     }
 
-    console.log(claim.documents, claim.id)
     return (<>
         {loading && (
             <div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
