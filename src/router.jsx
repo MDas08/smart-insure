@@ -40,19 +40,23 @@ async function viewUserLoader(req) {
     const userState = store.getState().user
     if (!userState.authToken) return redirect('/login')
     if (userState.role === "POLICY_HOLDER") {
-        alert('Insufficient permission to view user')
+        alert('Only claim assessors can view other users')
         return redirect('/')
     }
+
     const header = {
         headers: {
             Authorization: `Bearer ${userState.authToken}`
         }
     }
+
     const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/user/details/${req.params.userId}`, header)
+
     if (res.data.err) {
-        alert(res.data.err)
-        return redirect('/')
+        alert(res.data.err);
+        return redirect('/');
     }
+
     return res.data.msg
 }
 
@@ -89,28 +93,26 @@ async function myProfileLoader() {
 
     const [resUser, resClaims] = await Promise.all([
         axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/user/my-details`, header),
-        userState.role === 'CLAIM_ASSESSOR'
-            ? axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/pending`, header)
-            : axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/my-claims`, header),
+        userState.role === 'CLAIM_ASSESSOR' && axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/pending`, header)
     ]);
 
-    // Check for errors in each response
     if (resUser.data.err) {
         alert(resUser.data.err);
         return redirect('/');
-    } else if (resClaims.data.err) {
+    } else if (resClaims?.data?.err) {
         alert(resClaims.data.err);
-        return { err: resClaims.data.err };
+        return redirect('/')
     }
 
-    // Combine data into a single response object
-    const response = {
-        userDetails: resUser.data.msg, // Assuming data contains user details
-        claims: resClaims.data.msg, // Assuming data contains claims
-    };
+    let res = {}
 
-    return response;
+    if(userState.role === 'CLAIM_ASSESSOR') {
+        res = { ...resUser.data.msg, claims: resClaims.data.msg }
+    } else {
+        res = { ...resUser.data.msg }
+    }
 
+    return res
 }
 
 async function docUploadLoader(req) {
@@ -133,14 +135,38 @@ async function docUploadLoader(req) {
     return (15 - res.data.msg)
 }
 
-function claimInitLoader() {
+async function claimInitLoader(req) {
     const userState = store.getState().user
     if (!userState.authToken) return redirect('/login')
     if (userState.role === "CLAIM_ASSESSOR") {
         alert('Only policy holders can initialize claims')
         return redirect('/')
     }
-    return null
+
+    const header = {
+        headers: {
+            Authorization: `Bearer ${userState.authToken}`
+        }
+    }
+
+    const res1 = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/policy/hosp/all-codes`, header)
+    if (res1.data.err) {
+        alert(res1.data.err)
+        return redirect('/')
+    }
+
+    const res2 = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/policy/policyNumbers/${userState.userId}`, header)
+    if (res2.data.err) {
+        alert(res2.data.err)
+        return redirect('/')
+    }
+
+    const [hospCodes, policyNumbers] = [['--'], ['--']]
+
+    Array.from(res1.data.msg).forEach(o => hospCodes.push(o.code))
+    Array.from(res2.data.msg).forEach(o => policyNumbers.push(o.policyNumber))
+
+    return { hospCodes: hospCodes, policyNumbers: policyNumbers }
 }
 
 async function updateReportLoader(req) {

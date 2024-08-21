@@ -3,6 +3,8 @@ import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import DocViewer from '../components/DocViewer';
 import { useSelector } from 'react-redux';
 import axios from '../utils/axiosConf';
+import dayjs from 'dayjs';
+import rupeesFormat from '../utils/rupeesFormat'
 
 const ViewClaim = () => {
     const { claimId } = useParams()
@@ -27,7 +29,7 @@ const ViewClaim = () => {
         const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/report/generate/${claim.id}`, headers)
         setLoading(false)
         if (res.data.err) return alert(res.data.err)
-        setClaim(prevClaim => ({ ...prevClaim, report: res.data }))
+        setClaim(prevClaim => ({ ...prevClaim, report: { ...res.data.msg } }))
         alert('Report generated for this claim successfully')
     }
 
@@ -60,11 +62,11 @@ const ViewClaim = () => {
                             </>}
                         </div>
                     </div>
-                    
-                    <table className='flex flex-col border-2 border-color-turq rounded-lg w-auto px-10 py-8 '>
+
+                    <table className='flex flex-col border-2 border-color-turq rounded-lg w-auto px-10 py-8 mt-5'>
                         <tbody className='border-spacing-2'>
                             <tr>
-                                <th className='text-left'>Type of claim</th>
+                                <th className='text-left pr-14'>Type of claim</th>
                                 <td>{claim.claimType}</td>
                             </tr>
                             <tr>
@@ -81,15 +83,15 @@ const ViewClaim = () => {
                             </tr>
                             <tr>
                                 <th className='text-left'>Date of Admission  </th>
-                                <td>{claim.dateOfAdmission}</td>
+                                <td>{dayjs(claim.dateOfAdmission).format('DD-MM-YYYY')}</td>
                             </tr>
                             <tr>
                                 <th className='text-left'>Date of Intimation</th>
-                                <td>{claim.dateOfIntimation}</td>
+                                <td>{dayjs(claim.dateOfIntimation).format('DD-MM-YYYY')}</td>
                             </tr>
                             <tr>
                                 <th className='text-left'>Claim Amount</th>
-                                <td>{claim.claimAmount}</td>
+                                <td>{rupeesFormat(claim.claimAmount)}</td>
                             </tr>
                         </tbody>
                     </table>

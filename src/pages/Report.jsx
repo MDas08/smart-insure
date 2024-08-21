@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
+import rupeesFormat from '../utils/rupeesFormat';
 
 function ReportPage() {
     const navigate = useNavigate()
@@ -35,10 +36,11 @@ function ReportPage() {
 
     async function handleDeleteReport() {
         setLoading(true)
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/report/delete/${reportId}`, headers)
+        const res = await axios.delete(`${process.env.REACT_APP_BACKEND_DOMAIN}/report/delete/${reportId}`, headers)
         setLoading(false)
         if (res.data.err) return alert(res.data.err)
         alert(res.data.msg)
+        navigate('/')
     }
 
     if (!userState.authToken) {
@@ -116,7 +118,7 @@ function ReportPage() {
                 <div className='m-8 rounded-lg p-10 border-2 border-color-turq'>
                     <h1 className='text-lg font-bold'>Alternate Treatments</h1>
                     <div className='mt-2 mb-6'>
-                        <h1 className='font-semibold'>Estimated cost: {totalCost}</h1>
+                        <h1 className='font-semibold'>Estimated cost: {rupeesFormat(totalCost)}</h1>
                     </div>
                     {treatmentTypes.map(t => (
                         <button key={t} className={`${t === activeTreatmentType ? 'bg-color-blue' : 'bg-color-turq'} rounded-lg p-2 m-2 whitespace-nowrap text-white`}
@@ -136,7 +138,7 @@ function ReportPage() {
                                     return (
                                         <tr key={uuid()}>
                                             <td className='p-2 border border-slate-300'>{altTreatment.TreatmentDescription}</td>
-                                            <td className='p-2 border border-slate-300'>{altTreatment.Cost}</td>
+                                            <td className='p-2 border border-slate-300'>{rupeesFormat(altTreatment.Cost)}</td>
                                         </tr>
                                     )
                                 }

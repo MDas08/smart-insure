@@ -94,7 +94,9 @@ const UpdateTreatments = ({ report, headers, reportId }) => {
                             <div className='cursor-pointer rounded-lg h-10 bg-red-500 text-white mx-2 p-2' onClick={() => handleRemoveTreatment(idx)}>Delete</div>
                         </div>
                     ))}
-                    <button className={`inline-block self-center p-2 my-2 mt-4 text-white rounded-md bg-color-blue`} type="submit">Submit</button>
+                    <div className="flex justify-center items-center">
+                        <button className={`inline-block self-center p-2 my-2 mt-4 text-white rounded-md bg-color-blue`} type="submit">Submit</button>
+                    </div>
                 </form>
             </div>
 

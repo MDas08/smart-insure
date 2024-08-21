@@ -28,9 +28,9 @@ const UpdateReport = () => {
 
                 <UpdateDocwise report={report} reportId={reportId} headers={headers} />
                 <hr />
-                <UpdateSummary report={report} reportId={reportId} headers={headers} />
-                <hr />
                 <UpdateTreatments report={report} reportId={reportId} headers={headers} />
+                <hr />
+                <UpdateSummary report={report} reportId={reportId} headers={headers} />
                 <div className='flex justify-center mt-4 md:mt-10'>
                     <button className='py-2 px-4 bg-color-dark hover:bg-color-blue w-fit rounded-lg text-white'
                         onClick={() => navigate(`/view-report/${reportId}`)}

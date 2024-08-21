@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
 function FileItem({ name, index }) {
-    return <li className='flex px-4 py-2 bg-color-teal rounded-lg my-2 w-full overflow-hidden bg-opacity-50 items-center justify-around' key={index}>{name}
+    return <li className='flex justify-between px-4 py-2 bg-color-teal rounded-lg my-2 w-full overflow-hidden bg-opacity-50 items-center' key={index}>
+        <p>{name}</p>
         <select name={`fileType_${index}`} className="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-lg border-2 border-color-turq">
             <option value="TEXT">Text Report or Bills</option>
             <option value="SCAN">Scans or Images</option>
@@ -94,7 +95,7 @@ function DocUpload() {
             <div className={`p-8 ${loading && 'blur-sm pointer-events-none'} flex flex-col items-center`}>
                 {(!isSubmitted && maxUploads !== 0) &&
                     (
-                        <h1 className='mt-10 text-lg'>Upload your documents below</h1>
+                        <h1 className='my-7 text-3xl font-semibold'>Upload your documents below</h1>
                     )
                 }
 

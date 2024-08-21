@@ -44,7 +44,7 @@ const EditClaim = () => {
 		const res = await axios.delete(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/delete/${claimId}`, headers)
 		setLoading(false)
 		if (res.data.err) return alert(res.data.err)
-		alert(res.data.msg)
+		alert('Claim deleted successfully')
 		return navigate('/')
 	}
 
