@@ -9,8 +9,7 @@ import axios from '../utils/axiosConf'
 const ViewUser = () => {
     const { userId } = useParams()
     const [user, setUser] = useState(useLoaderData())
-    console.log('77777777', user)
-    const [loading, setLoading] = useState()
+    const [loading, setLoading] = useState(false)
     const [showPassInput, setShowPassInput] = useState(false)
     const userState = useSelector(state => state.user)
     const passwdRef = useRef()
@@ -31,7 +30,6 @@ const ViewUser = () => {
     }
 
     return (<div>
-
         {loading && (
             <div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
                 <div className="text-xl font-semibold text-gray-700">

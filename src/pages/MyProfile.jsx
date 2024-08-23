@@ -8,10 +8,9 @@ import axios from '../utils/axiosConf'
 
 
 const MyProfile = () => {
-    console.log('99999999', useLoaderData())
     const user = useLoaderData()
     const dispatch = useDispatch()
-    const [loading, setLoading] = useState()
+    const [loading, setLoading] = useState(false)
     const [showPassInput, setShowPassInput] = useState(false)
     const userState = useSelector(state => state.user)
     const passwdRef = useRef()

@@ -7,7 +7,7 @@ import { addUser } from '../store/userSlice'
 
 const Signup = () => {
     const dispatch = useDispatch()
-    const [loading, setLoading] = useState()
+    const [loading, setLoading] = useState(false)
     const formRef = useRef()
     const navigate = useNavigate()
 
