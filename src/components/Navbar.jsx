@@ -32,6 +32,10 @@ function Navbar() {
             onClick={() => navigate(`/my-profile`)}
             key={"profile"}>Profile</button></li> */}
 
+          {userState.role === "CLAIM_ASSESSOR" &&
+            <li><button className='py-4 px-8 bg-transparent hover:bg-color-dark'
+              onClick={() => navigate(`/view-all-users`)}>All users</button></li>}
+
           {userState.authToken ?
             <li><button className='py-4 px-8 bg-transparent hover:bg-color-dark'
               onClick={logout}>Log Out</button></li>

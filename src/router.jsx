@@ -15,6 +15,7 @@ import MyProfile from "./pages/MyProfile";
 import EditClaim from "./pages/EditClaim";
 import Signup from "./pages/Signup";
 import HomePage from "./pages/HomePage";
+import ViewAllUsers from "./pages/ViewAllUsers";
 
 export const router = createBrowserRouter([
     {
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
             { path: "my-profile", element: <MyProfile />, loader: myProfileLoader },
             { path: "edit-claim/:claimId", element: <EditClaim />, loader: editClaimLoader },
             { path: "signup", element: <Signup /> },
+            { path: "view-all-users", element: <ViewAllUsers />, loader: viewAllUsersLoader }
             //{ path: "home", element: <HomePage/> },
         ]
     }
@@ -58,6 +60,30 @@ async function viewUserLoader(req) {
     }
 
     return res.data.msg
+}
+
+async function viewAllUsersLoader(req) {
+    const userState = store.getState().user
+    if (!userState.authToken) return redirect('/login')
+    if (userState.role === "POLICY_HOLDER") {
+        alert('Only claim assessors can view other users')
+        return redirect('/')
+    }
+
+    const header = {
+        headers: {
+            Authorization: `Bearer ${userState.authToken}`
+        }
+    }
+
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/user/get-all`, header)
+
+    if (res.data.err) {
+        alert(res.data.err);
+        return redirect('/');
+    }
+
+    return Array.from(res.data.msg)
 }
 
 async function editClaimLoader(req) {

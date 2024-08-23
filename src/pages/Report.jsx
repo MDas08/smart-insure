@@ -10,7 +10,7 @@ function ReportPage() {
     const { reportId } = useParams()
     const userState = useSelector(state => state.user)
     const report = useLoaderData()
-    const [loading, setLoading] = useState()
+    const [loading, setLoading] = useState(false)
     const summary = JSON.parse(report.combinedSummary).Summary
     const docWiseReport = JSON.parse(report.docWiseReport.text)
     const alternateTreatments = JSON.parse(report.alternateTreatments.text).TreatmentDetails
