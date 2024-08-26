@@ -32,7 +32,7 @@ const UpdateDocwise = ({ report, headers, reportId }) => {
         e.preventDefault()
         const formData = new FormData(docWiseFormRef.current);
         const data = Object.fromEntries(formData)
-        const newDw = []
+        let newDw = []
         docWise.forEach((dw, i) => {
             if (i === activeDocIdx) {
                 newDw.push(data)
@@ -40,6 +40,9 @@ const UpdateDocwise = ({ report, headers, reportId }) => {
                 newDw.push(dw)
             }
         })
+        newDw = newDw.filter(dw => dw.MedicalReportName !== '')
+        medicalRepNames.current = newDw.map(dw => dw.MedicalReportName)
+        setActiveDocIdx(0)
         setDocWise(newDw)
         setLoading(true)
         const res = await axios.put(`${process.env.REACT_APP_BACKEND_DOMAIN}/report/docWise/update/${reportId}`,
@@ -59,7 +62,9 @@ const UpdateDocwise = ({ report, headers, reportId }) => {
         if (res.data.err) {
             alert(res.data.err)
         }
-        setDocWise(JSON.parse(res.data.msg))
+        const newDw = JSON.parse(res.data.msg)
+        setDocWise(newDw)
+        medicalRepNames.current = newDw.map(dw => dw.MedicalReportName)
     }
 
     return (<>
@@ -73,7 +78,10 @@ const UpdateDocwise = ({ report, headers, reportId }) => {
         <div className={`p-2 ${loading && 'blur-sm pointer-events-none'}`}>
             <div className='m-2 p-2'>
                 <div className='flex justify-between'>
-                    <h1 className='my-6 font-bold text-xl'>Edit Report Wise Summary</h1>
+                    <div className='my-6'>
+                        <h1 className='font-bold text-xl'>Edit Report Wise Summary</h1>
+                        <p>Leave medical report name field name empty to delete corresponding report</p>
+                    </div>
                     <button className='h-10 px-3 rounded-md bg-color-dark text-white m-2 p-2' onClick={handleGenDocWise}>Generate new report wise summary</button>
                 </div>
                 <div className='flex'>
@@ -126,7 +134,7 @@ const UpdateDocwise = ({ report, headers, reportId }) => {
                             </div>
                             <div className='flex flex-col'>
                                 <label htmlFor="Prognosis">Prognosis</label>
-                                <input type="text" className='h-10' name="Prognosis" defaultValue={docWise[activeDocIdx].Prognosis} />
+                                <textarea className='h-10 min-h-16' name="Prognosis" defaultValue={docWise[activeDocIdx].Prognosis} />
                             </div>
                         </form>
                     </>}

@@ -14,7 +14,7 @@ function ReportPage() {
     const summary = JSON.parse(report.combinedSummary).Summary
     const docWiseReport = JSON.parse(report.docWiseReport.text)
     const alternateTreatments = JSON.parse(report.alternateTreatments.text).TreatmentDetails
-    const [activeDocReport, setActiveDocReport] = useState(docWiseReport[0])
+    const [activeDocReport, setActiveDocReport] = useState(0)
     const treatmentTypes = [...new Set(alternateTreatments.map(at => at.TypeOfTreatment))]
     const [activeTreatmentType, setActiveTreatmentType] = useState(alternateTreatments[0].TypeOfTreatment)
     let totalCost = 0
@@ -87,8 +87,8 @@ function ReportPage() {
                             {docWiseReport.map((docReport, idx) => (
                                 <button
                                     key={idx}
-                                    className={`${docReport.MedicalReportName === activeDocReport.MedicalReportName ? 'bg-color-blue' : 'bg-color-turq'} rounded-lg p-2 m-2 whitespace-nowrap text-white`}
-                                    onClick={() => setActiveDocReport(docReport)}
+                                    className={`${idx === activeDocReport ? 'bg-color-blue' : 'bg-color-turq'} rounded-lg p-2 m-2 whitespace-nowrap text-white`}
+                                    onClick={() => setActiveDocReport(idx)}
                                 >
                                     {docReport.MedicalReportName}
                                 </button>
@@ -96,22 +96,22 @@ function ReportPage() {
                         </div>
                     </div>
 
-                    {activeDocReport.hasOwnProperty('Findings') && <div>
-                        <p><p className='font-semibold inline'>Findings:</p> {activeDocReport.Findings}</p>
+                    {docWiseReport[activeDocReport].hasOwnProperty('Findings') && <div>
+                        <p><p className='font-semibold inline'>Findings:</p> {docWiseReport[activeDocReport].Findings}</p>
                         <br />
-                        <p><p className='font-semibold inline'>Clinical Indication:</p> {activeDocReport.ClinicalIndication}</p>
+                        <p><p className='font-semibold inline'>Clinical Indication:</p> {docWiseReport[activeDocReport].ClinicalIndication}</p>
                         <br />
-                        <p><p className='font-semibold inline'>Type Of Report Uploaded:</p> {activeDocReport.TypeOfReportUploaded}</p>
+                        <p><p className='font-semibold inline'>Type Of Report Uploaded:</p> {docWiseReport[activeDocReport].TypeOfReportUploaded}</p>
                         <br />
-                        <p><p className='font-semibold inline'>Diagnosis:</p> {activeDocReport.Diagnosis}</p>
+                        <p><p className='font-semibold inline'>Diagnosis:</p> {docWiseReport[activeDocReport].Diagnosis}</p>
                         <br />
-                        <p><p className='font-semibold inline'>Impression:</p> {activeDocReport.Impression}</p>
+                        <p><p className='font-semibold inline'>Impression:</p> {docWiseReport[activeDocReport].Impression}</p>
                         <br />
-                        <p><p className='font-semibold inline'>Technique:</p> {activeDocReport.Technique}</p>
+                        <p><p className='font-semibold inline'>Technique:</p> {docWiseReport[activeDocReport].Technique}</p>
                     </div>}
 
-                    {activeDocReport.hasOwnProperty('Prognosis') && <div>
-                        <p><p className='font-semibold inline'>Prognosis:</p> {activeDocReport.Prognosis}</p>
+                    {docWiseReport[activeDocReport].hasOwnProperty('Prognosis') && <div>
+                        <p><p className='font-semibold inline'>Prognosis:</p> {docWiseReport[activeDocReport].Prognosis}</p>
                     </div>}
                 </div>
                 <hr />

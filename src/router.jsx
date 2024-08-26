@@ -16,10 +16,13 @@ import EditClaim from "./pages/EditClaim";
 import Signup from "./pages/Signup";
 import HomePage from "./pages/HomePage";
 import ViewAllUsers from "./pages/ViewAllUsers";
+import ErrorPage from "./pages/ErrorPage";
 
 export const router = createBrowserRouter([
     {
-        path: '/', element: <NavLayout />, children: [
+        path: '/', element: <NavLayout />,
+        errorElement: <ErrorPage />,
+        children: [
             { path: "", element: <HomePage /> },
             { path: "dash", element: <Dashboard />, loader: dashboardLoader },
             { path: "new-claim", element: <ClaimInit />, loader: claimInitLoader },
@@ -32,8 +35,8 @@ export const router = createBrowserRouter([
             { path: "my-profile", element: <MyProfile />, loader: myProfileLoader },
             { path: "edit-claim/:claimId", element: <EditClaim />, loader: editClaimLoader },
             { path: "signup", element: <Signup /> },
-            { path: "view-all-users", element: <ViewAllUsers />, loader: viewAllUsersLoader }
-            //{ path: "home", element: <HomePage/> },
+            { path: "view-all-users", element: <ViewAllUsers />, loader: viewAllUsersLoader },
+            { path: "", element: <ErrorPage noSuchPage={true} /> },
         ]
     }
 ])
@@ -132,7 +135,7 @@ async function myProfileLoader() {
 
     let res = {}
 
-    if(userState.role === 'CLAIM_ASSESSOR') {
+    if (userState.role === 'CLAIM_ASSESSOR') {
         res = { ...resUser.data.msg, claims: resClaims.data.msg }
     } else {
         res = { ...resUser.data.msg }
