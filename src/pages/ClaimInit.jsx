@@ -7,8 +7,8 @@ import { v4 as uuid } from 'uuid'
 
 const ClaimInit = () => {
 	const formRef = useRef()
-	const { hospCodes, policyNumbers } = useLoaderData()
-	const policyNumRef = useRef()
+	const { hospCodes, policyIds } = useLoaderData()
+	const policyIdRef = useRef()
 	const hospCodeRef = useRef()
 	const navigate = useNavigate()
 	const userState = useSelector(state => state.user)
@@ -17,7 +17,7 @@ const ClaimInit = () => {
 		coverageStartDate: '--',
 		patientDob: '--',
 		patientName: '--',
-		policyNumber: '--'
+		policyId: '--'
 	})
 	const [hosp, setHosp] = useState({
 		name: '--',
@@ -54,12 +54,12 @@ const ClaimInit = () => {
 	};
 
 	async function getPolicy() {
-		if(policyNumbers[0] === '--') {
-			policyNumbers.shift()
+		if(policyIds[0] === '--') {
+			policyIds.shift()
 		}
-		const enteredPolicyNumber = policyNumRef.current.value
+		const enteredPolicyId = policyIdRef.current.value
 		setLoading(true)
-		const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/policy/${enteredPolicyNumber}`, headers)
+		const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/policy/${enteredPolicyId}`, headers)
 		setLoading(false)
 		if (res.data.err) {
 			alert(res.data.err)
@@ -125,8 +125,8 @@ const ClaimInit = () => {
 						<div className="flex flex-col w-11/12 space-y-4 md:mr-2">
 							<label className='mr-auto'>Policy Number</label>
 							<div className='flex items-start'>
-								<select onChange={getPolicy} value={policy.policyNumber} ref={policyNumRef} name='policyNumber' className="w-11/12 block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-lg border-2 border-color-turq">
-									{Array.from(policyNumbers).map(policyNumber => (<option key={uuid()} value={policyNumber}>{policyNumber}</option>))}
+								<select onChange={getPolicy} value={policy.id} ref={policyIdRef} name='policyId' className="w-11/12 block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-lg border-2 border-color-turq">
+									{Array.from(policyIds).map(policyId => (<option key={uuid()} value={policyId}>{policyId}</option>))}
 								</select>
 							</div>
 							<label className='mr-auto'>Date of Birth</label>

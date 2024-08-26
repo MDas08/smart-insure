@@ -16,10 +16,13 @@ import EditClaim from "./pages/EditClaim";
 import Signup from "./pages/Signup";
 import HomePage from "./pages/HomePage";
 import ViewAllUsers from "./pages/ViewAllUsers";
+import ErrorPage from "./pages/ErrorPage";
 
 export const router = createBrowserRouter([
     {
-        path: '/', element: <NavLayout />, children: [
+        path: '/', element: <NavLayout />,
+        errorElement: <ErrorPage />,
+        children: [
             { path: "", element: <HomePage /> },
             { path: "dash", element: <Dashboard />, loader: dashboardLoader },
             { path: "new-claim", element: <ClaimInit />, loader: claimInitLoader },
@@ -32,8 +35,8 @@ export const router = createBrowserRouter([
             { path: "my-profile", element: <MyProfile />, loader: myProfileLoader },
             { path: "edit-claim/:claimId", element: <EditClaim />, loader: editClaimLoader },
             { path: "signup", element: <Signup /> },
-            { path: "view-all-users", element: <ViewAllUsers />, loader: viewAllUsersLoader }
-            //{ path: "home", element: <HomePage/> },
+            { path: "view-all-users", element: <ViewAllUsers />, loader: viewAllUsersLoader },
+            { path: "", element: <ErrorPage noSuchPage={true} /> },
         ]
     }
 ])
@@ -132,7 +135,7 @@ async function myProfileLoader() {
 
     let res = {}
 
-    if(userState.role === 'CLAIM_ASSESSOR') {
+    if (userState.role === 'CLAIM_ASSESSOR') {
         res = { ...resUser.data.msg, claims: resClaims.data.msg }
     } else {
         res = { ...resUser.data.msg }
@@ -181,18 +184,18 @@ async function claimInitLoader(req) {
         return redirect('/')
     }
 
-    const res2 = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/policy/policyNumbers/${userState.userId}`, header)
+    const res2 = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/policy/user-policies/${userState.userId}`, header)
     if (res2.data.err) {
         alert(res2.data.err)
         return redirect('/')
     }
 
-    const [hospCodes, policyNumbers] = [['--'], ['--']]
+    const [hospCodes, policyIds] = [['--'], ['--']]
 
     Array.from(res1.data.msg).forEach(o => hospCodes.push(o.code))
-    Array.from(res2.data.msg).forEach(o => policyNumbers.push(o.policyNumber))
+    Array.from(res2.data.msg).forEach(o => policyIds.push(o.id))
 
-    return { hospCodes: hospCodes, policyNumbers: policyNumbers }
+    return { hospCodes, policyIds }
 }
 
 async function updateReportLoader(req) {

@@ -61,14 +61,14 @@ const DocViewer = ({ documents, editable, claimId, setClaim = () => { } }) => {
                 {editable && <button className='bg-red-500 hover:bg-red-700 my-2 px-4 py-2 rounded-lg text-white' onClick={onDeleteAllDocsHandle}>Delete all documents</button>}
 
             </div>
-            {docs.map(doc => (<>
+            {docs.map(doc => (
                 <div className={`${loading && 'pointer-events-none'}`} key={doc.id} >
                     <div onClick={(e) => handleOpenDoc(e, doc.url)} className='cursor-pointer flex my-5 py-2 px-4 rounded-lg text-white bg-color-turq hover:bg-color-blue justify-between'>
                         <p>{doc.originalName}  [{doc.docType}]</p>
                         {editable && <button className='border-2 bg-white border-red-500 hover:bg-red-500 my-2 px-2 rounded-lg text-red-500 hover:text-white' onClick={(e) => onDeleteDocHandle(e, doc.id)}>Delete</button>}
                     </div>
                 </div>
-            </>))}
+            ))}
         </div>
     </div>)
 }
