@@ -81,7 +81,7 @@ const ClaimInit = () => {
 			return
 		}
 		setHosp({ ...res.data.msg })
-		console.log(JSON.stringify(hosp))
+		
 	}
 
 	return (<>

@@ -51,26 +51,28 @@ const UpdateSummary = ({ report, headers, reportId }) => {
         <div className={`p-2 ${loading && 'blur-sm pointer-events-none'}`}>
             <div className='m-2 p-2'>
                 <div className='flex justify-between'>
-                    <h1 className='my-6 font-bold text-xl'>Edit Summary</h1>
+                    <h1 className='my-6 font-bold text-xl'>Claim Assessment</h1>
                     <button className='h-10 px-3 rounded-md bg-color-dark text-white m-2 p-2' onClick={handleGenSummary}>Generate new consolidated summary</button>
                 </div>
                 <form ref={summaryRef} className='flex flex-col gap-y-3 my-5 justify-start' onSubmit={handleSummarySubmit}>
+                    <div className="flex flex-col space-y-4">
+                        <label className='mr-auto'>Decision</label>
+                        <select name='approved' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full rounded-lg border-2 border-color-turq bg-color-turq bg-opacity-30">
+                            <option value="STALL">Decision Pending</option>
+                            <option value="YES">Approved</option>
+                            <option value="NO">Repudiated</option>
+                        </select>
+                    </div>
+
                     <div>
                         <label htmlFor="summary">Summary</label>
-                        <textarea className='h-20' name="summary" defaultValue={summary} />
+                        <textarea className='h-48 p-3 bg-color-turq bg-opacity-30' name="summary" defaultValue={summary} />
                     </div>
                     <div>
                         <label htmlFor="notes">Notes</label>
                         <textarea className='h-20' name="notes" defaultValue={report.notes} />
                     </div>
-                    <div className="flex flex-col space-y-4">
-						<label className='mr-auto'>Approved</label>
-						<select name='approved' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full rounded-lg border-2 border-color-turq">
-							<option value="STALL">Stall</option>
-							<option value="YES">Yes</option>
-							<option value="NO">No</option>
-						</select>
-					</div>
+
                     <button className={`inline-block self-center p-2 m-2 mt-4 text-white rounded-md bg-color-blue`} type="submit">Submit</button>
                 </form>
             </div>

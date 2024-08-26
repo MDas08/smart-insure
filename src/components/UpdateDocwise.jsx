@@ -133,7 +133,7 @@ const UpdateDocwise = ({ report, headers, reportId }) => {
                     <div className="flex justify-center items-center">
                         <button onClick={handleDocWiseSubmit}
                             className={`inline-block p-2 m-2 mt-4 text-white rounded-md bg-color-blue`}
-                            type="submit">Submit
+                            type="submit">Set Docwise Report
                         </button>
                     </div>
                 </div>

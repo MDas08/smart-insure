@@ -142,7 +142,7 @@ function DocUpload() {
                         (
                             <div className='mt-10'>
                                 <p>Documents submitted!</p>
-                                <button onClick={() => navigate('/')} className='bg-color-turq text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Dashboard</button>
+                                <button onClick={() => navigate('/')} className='bg-color-turq text-white p-4 rounded-lg mt-5 hover:bg-color-blue'>Home</button>
                             </div>
                         )
                     }

@@ -19,6 +19,18 @@ function ReportPage() {
     const [activeTreatmentType, setActiveTreatmentType] = useState(alternateTreatments[0].TypeOfTreatment)
     let totalCost = 0
 
+    const [approvalMessage, setApprovalMessage] = useState(() => {
+        if (report.approved !== null) {
+            if(report.approved === 'YES')
+                return 'Approved';
+            else if(report.approved === 'NO')
+                return 'Repudiated';
+            return 'Decision Pending'
+        } else {
+          return 'Decision Pending';
+        }
+      });
+    
     const headers = {
         headers: {
             Authorization: `Bearer ${userState.authToken}`
@@ -60,7 +72,7 @@ function ReportPage() {
         <div className={`p-2 ${loading && 'blur-sm pointer-events-none'}`}>
             <div>
                 {report.approved !== null && <div>
-                    <h1 className='m-8 px-2 py-1 text-lg rounded-lg text-white bg-color-turq w-fit'>Approved: {report.approved}</h1>
+                    <h1 className='m-8 px-2 py-1 text-lg rounded-lg text-white bg-color-turq w-fit'>Approval Status: {approvalMessage}</h1>
                 </div>}
                 <hr />
 

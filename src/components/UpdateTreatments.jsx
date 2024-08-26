@@ -95,7 +95,7 @@ const UpdateTreatments = ({ report, headers, reportId }) => {
                         </div>
                     ))}
                     <div className="flex justify-center items-center">
-                        <button className={`inline-block self-center p-2 my-2 mt-4 text-white rounded-md bg-color-blue`} type="submit">Submit</button>
+                        <button className={`inline-block self-center p-2 my-2 mt-4 text-white rounded-md bg-color-blue`} type="submit">Set Alternate Treatments</button>
                     </div>
                 </form>
             </div>
