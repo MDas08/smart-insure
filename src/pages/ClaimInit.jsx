@@ -81,7 +81,6 @@ const ClaimInit = () => {
 			return
 		}
 		setHosp({ ...res.data.msg })
-		
 	}
 
 	return (<>
