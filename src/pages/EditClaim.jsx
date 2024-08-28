@@ -8,15 +8,35 @@ import DocViewer from '../components/DocViewer';
 const EditClaim = () => {
 	const formRef = useRef()
 	const { claimId } = useParams()
-	const [claim, setClaim] = useState(useLoaderData())
+	const [claim, setClaim] = useState(useLoaderData().claims)
+	const hospCodes = useLoaderData().hospCodes
 	const navigate = useNavigate()
+	const hospCodeRef = useRef()
 	const userState = useSelector(state => state.user)
 	const [loading, setLoading] = useState(false)
+
+	const [hosp, setHosp] = useState({
+		name: claim.hospName,
+		city: claim.hospCity,
+		code: claim.hospCode,
+	})
 
 	const headers = {
 		headers: {
 			Authorization: `Bearer ${userState.authToken}`
 		}
+	}
+
+	async function getHosp() {
+		const hospCode = hospCodeRef.current.value
+		setLoading(true)
+		const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/policy/hosp/${hospCode}`, headers)
+		setLoading(false)
+		if (res.data.err) {
+			alert(res.data.err)
+			return
+		}
+		setHosp({ ...res.data.msg })
 	}
 
 	async function submit(event) {
@@ -96,19 +116,23 @@ const EditClaim = () => {
 						</div>
 					</div>
 
-					<div id='title' className='text-2xl bg-color-turq rounded-2xl w-4/5 h-16 content-center mb-6 mt-20'>
+					<div id='title' className='text-2xl bg-color-turq rounded-2xl w-4/5 h-16 content-center my-6'>
 						<h1 className='pl-6 text-left text-white'>Hospital Details</h1>
 					</div>
 					<div className='flex md:flex-row flex-col w-4/5 justify-center items-center md:items-start space-y-4 md:space-y-0'>
 						<div className="flex flex-col w-11/12 space-y-4 md:mr-2">
 							<label className='mr-auto'>Hospital Name</label>
-							<input defaultValue={claim.hospName} name="hospName" type='text' />
+							<input className='rounded-2xl border-2 border-color-turq' value={hosp.name} name='hospName' />
 							<label className='mr-auto'>Hospital City</label>
-							<input defaultValue={claim.hospCity} name="hospCity" type='text' />
+							<input className='rounded-2xl border-2 border-color-turq' value={hosp.city} name='hospCity' />
 						</div>
 						<div className="flex flex-col w-11/12 space-y-4 md:mr-2">
 							<label className='mr-auto'>Hospital Code</label>
-							<input defaultValue={claim.hospCode} name="hospCode" type='text' />
+							<div className='flex items-start'>
+								<select onChange={getHosp} value={hosp.code} ref={hospCodeRef} name='hospCode' className="w-11/12 block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-lg border-2 border-color-turq">
+									{Array.from(hospCodes).map(hospCode => (<option key={hospCode} value={hospCode}>{hospCode}</option>))}
+								</select>
+							</div>
 						</div>
 					</div>
 					<div className='flex space-x-5 justify-center mt-10'>

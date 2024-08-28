@@ -102,12 +102,18 @@ async function editClaimLoader(req) {
             Authorization: `Bearer ${userState.authToken}`
         }
     }
-    const res = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/${req.params.claimId}`, header)
-    if (res.data.err) {
-        alert(res.data.err)
+    const claimRes = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/claim/${req.params.claimId}`, header)
+    if (claimRes.data.err) {
+        alert(claimRes.data.err)
         return redirect('/')
     }
-    return res.data.msg
+    const hospCodesRes = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/policy/hosp/all-codes`, header)
+    if (hospCodesRes.data.err) {
+        alert(hospCodesRes.data.err)
+        return redirect('/')
+    }
+
+    return { claims: claimRes.data.msg, hospCodes: Array.from(hospCodesRes.data.msg).map(o => o.code) }
 }
 
 async function myProfileLoader() {
